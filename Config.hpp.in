@@ -1,0 +1,17 @@
+// clang-format off
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#define PROJECT_NAME "@PROJECT_NAME@"
+#define PROJECT_VERSION_MAJOR @PROJECT_VERSION_MAJOR@
+#define PROJECT_VERSION_MINOR @PROJECT_VERSION_MINOR@
+#define PROJECT_VERSION_REVISION @PROJECT_VERSION_REVISION@
+
+#ifdef ENABLE_DOUBLE_PRECISION
+typedef double QUALEUS_PRECISION;
+#else
+typedef float QUALEUS_PRECISION;
+#endif 
+#define PRECISION_SET
+#endif
+// clang-format on
