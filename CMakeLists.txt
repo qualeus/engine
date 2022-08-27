@@ -36,8 +36,8 @@ set(SOURCES
     sources/Geometry/Bounds.cpp
     sources/Geometry/Collision.cpp
     sources/Geometry/Geometry.cpp
-    sources/Geometry/Vector.cpp
-    sources/Geometry/Vertices.cpp
+    sources/Geometry/Vector2.cpp
+    sources/Geometry/Vertices2.cpp
 
     sources/Benchmark/BlockData.cpp
     sources/Benchmark/Performance.cpp
@@ -49,11 +49,6 @@ set(SOURCES
 
     sources/Constraints/Constraint.cpp
     sources/Constraints/Link.cpp
-    sources/Constraints/Loose.cpp
-    sources/Constraints/Motor.cpp
-    sources/Constraints/Propulsor.cpp
-    sources/Constraints/Slider.cpp
-    sources/Constraints/Spring.cpp
 
     sources/Structures/QuadTree.cpp
     sources/Structures/QuadNode.cpp
@@ -67,8 +62,8 @@ set(HEADERS
     include/Geometry/Bounds.hpp
     include/Geometry/Collision.hpp
     include/Geometry/Geometry.hpp
-    include/Geometry/Vector.hpp
-    include/Geometry/Vertices.hpp
+    include/Geometry/Vector2.hpp
+    include/Geometry/Vertices2.hpp
 
     include/Benchmark/BlockData.hpp
     include/Benchmark/Performance.hpp
@@ -80,11 +75,6 @@ set(HEADERS
 
     include/Constraints/Constraint.hpp
     include/Constraints/Link.hpp
-    include/Constraints/Loose.hpp
-    include/Constraints/Motor.hpp
-    include/Constraints/Propulsor.hpp
-    include/Constraints/Slider.hpp
-    include/Constraints/Spring.hpp
 
     include/Structures/QuadTree.hpp
     include/Structures/QuadNode.hpp

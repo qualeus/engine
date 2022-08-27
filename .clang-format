@@ -5,9 +5,12 @@
     TabWidth: 4,
     ColumnLimit: 200,
     AllowAllParametersOfDeclarationOnNextLine: false,
+    BinPackParameters: false,
+    BinPackArguments: false,
     BreakBeforeBraces: Attach,
-    AllowShortFunctionsOnASingleLine: All,
+    AllowShortFunctionsOnASingleLine: Empty,
     AllowShortIfStatementsOnASingleLine : Always,
     AllowShortBlocksOnASingleLine: Always,
     AllowShortCaseLabelsOnASingleLine: true,
+    SpaceInEmptyBlock: true,
 }

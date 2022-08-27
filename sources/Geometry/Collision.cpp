@@ -3,18 +3,18 @@
 namespace gmt {
 
 template <typename T>
-Collision<T>::Collision(phy::Corpse* lhs, phy::Corpse* rhs, gmt::VectorI origin, gmt::VectorI normal) {
-    this->lhs = lhs;
-    this->rhs = rhs;
-    this->origin = origin;
-    this->normal = normal;
+Collision<T>::Collision(phy::Corpse* _lhs, phy::Corpse* _rhs, gmt::VectorI _origin, gmt::VectorI _normal) {
+    m_lhs = _lhs;
+    m_rhs = _rhs;
+    origin = _origin;
+    normal = _normal;
 }
 template Collision<int>::Collision(phy::Corpse* lhs, phy::Corpse* rhs, gmt::VectorI origin, gmt::VectorI normal);
 template Collision<float>::Collision(phy::Corpse* lhs, phy::Corpse* rhs, gmt::VectorI origin, gmt::VectorI normal);
 template Collision<double>::Collision(phy::Corpse* lhs, phy::Corpse* rhs, gmt::VectorI origin, gmt::VectorI normal);
 
 template <typename T>
-std::vector<Collision<T>> Collision<T>::Resolve(std::shared_ptr<phy::Corpse> lhs, std::shared_ptr<phy::Corpse> rhs) {
+std::vector<Collision<T>> Collision<T>::resolve(std::shared_ptr<phy::Corpse> lhs, std::shared_ptr<phy::Corpse> rhs) {
     /* Left Hand Side pointer classes */
     phy::Circle* lcircle = nullptr;
     phy::Polygon* lpolygon = nullptr;
@@ -41,26 +41,26 @@ std::vector<Collision<T>> Collision<T>::Resolve(std::shared_ptr<phy::Corpse> lhs
 
     /* Possible to factorise but it's easier to read like that */
     if (lhs_class == phy::Circle::id_class() && rhs_class == phy::Circle::id_class()) {
-        return Collision<T>::CircleOnCircle(rcircle, lcircle);
+        return Collision<T>::circle_on_circle(rcircle, lcircle);
     } else if (lhs_class == phy::Circle::id_class() && rhs_class == phy::Polygon::id_class()) {
-        return Collision<T>::CircleOnPolygon(lcircle, rpolygon);
+        return Collision<T>::circle_on_polygon(lcircle, rpolygon);
     } else if (lhs_class == phy::Polygon::id_class() && rhs_class == phy::Circle::id_class()) {
-        return Collision<T>::CircleOnPolygon(rcircle, lpolygon);
+        return Collision<T>::circle_on_polygon(rcircle, lpolygon);
     } else if (lhs_class == phy::Polygon::id_class() && rhs_class == phy::Polygon::id_class()) {
-        return Collision<T>::PolygonOnPolygon(rpolygon, lpolygon);
+        return Collision<T>::polygon_on_polygon(rpolygon, lpolygon);
     }
 
     /* If can't resolve corpses */
     return {};  // Return no collision
 }
-template std::vector<Collision<int>> Collision<int>::Resolve(std::shared_ptr<phy::Corpse> lhs, std::shared_ptr<phy::Corpse> rhs);
-template std::vector<Collision<float>> Collision<float>::Resolve(std::shared_ptr<phy::Corpse> lhs, std::shared_ptr<phy::Corpse> rhs);
-template std::vector<Collision<double>> Collision<double>::Resolve(std::shared_ptr<phy::Corpse> lhs, std::shared_ptr<phy::Corpse> rhs);
+template std::vector<Collision<int>> Collision<int>::resolve(std::shared_ptr<phy::Corpse> lhs, std::shared_ptr<phy::Corpse> rhs);
+template std::vector<Collision<float>> Collision<float>::resolve(std::shared_ptr<phy::Corpse> lhs, std::shared_ptr<phy::Corpse> rhs);
+template std::vector<Collision<double>> Collision<double>::resolve(std::shared_ptr<phy::Corpse> lhs, std::shared_ptr<phy::Corpse> rhs);
 
 /* Circle / Circle Collision */
 template <typename T>
-std::vector<Collision<T>> Collision<T>::CircleOnCircle(phy::Circle* circleA, phy::Circle* circleB) {
-    UnitI distance = gmt::VectorI::Distance(circleA->get_pos(), circleB->get_pos()) + gmt::UnitI(1);
+std::vector<Collision<T>> Collision<T>::circle_on_circle(phy::Circle* circleA, phy::Circle* circleB) {
+    UnitI distance = gmt::VectorI::distance(circleA->get_pos(), circleB->get_pos()) + gmt::UnitI(1);
     UnitI overlap = (circleA->get_size() + circleB->get_size()) - distance;
 
     if (overlap < 0) { return {}; }  // Not colliding
@@ -69,23 +69,23 @@ std::vector<Collision<T>> Collision<T>::CircleOnCircle(phy::Circle* circleA, phy
     UnitI y_diff = circleA->get_pos_y() - circleB->get_pos_y();
 
     VectorI vector_response = gmt::VectorI(x_diff / distance, y_diff / distance) * overlap;
-    VectorI vector_origin = circleA->get_pos() - vector_response.Normalize() * circleA->get_size();
-    return {Collision<T>::Response(circleA, circleB, vector_origin, vector_response)};
+    VectorI vector_origin = circleA->get_pos() - vector_response.normalize() * circleA->get_size();
+    return {Collision<T>::response(circleA, circleB, vector_origin, vector_response)};
 }
-template std::vector<Collision<int>> Collision<int>::CircleOnCircle(phy::Circle* circleA, phy::Circle* circleB);
-template std::vector<Collision<float>> Collision<float>::CircleOnCircle(phy::Circle* circleA, phy::Circle* circleB);
-template std::vector<Collision<double>> Collision<double>::CircleOnCircle(phy::Circle* circleA, phy::Circle* circleB);
+template std::vector<Collision<int>> Collision<int>::circle_on_circle(phy::Circle* circleA, phy::Circle* circleB);
+template std::vector<Collision<float>> Collision<float>::circle_on_circle(phy::Circle* circleA, phy::Circle* circleB);
+template std::vector<Collision<double>> Collision<double>::circle_on_circle(phy::Circle* circleA, phy::Circle* circleB);
 
 /* Circle / Polygon collision */
 template <typename T>
-std::vector<Collision<T>> Collision<T>::CircleOnPolygon(phy::Circle* circle, phy::Polygon* polygon) {
+std::vector<Collision<T>> Collision<T>::circle_on_polygon(phy::Circle* circle, phy::Polygon* polygon) {
     // Collide if the center of the circle is in the polygon
     /*
     if (polygon->Pointed(gmt::VectorI(circle->get_pos()))) {
-        std::pair<std::shared_ptr<gmt::VectorI>, std::shared_ptr<gmt::VectorI>> closest_edge = gmt::VerticesI::ClosestEdge(polygon->get_points(), circle->get_pos());
+        std::pair<std::shared_ptr<gmt::VectorI>, std::shared_ptr<gmt::VectorI>> closest_edge = gmt::VerticesI::closest_edge(polygon->get_points(), circle->get_pos());
 
-        gmt::VectorI closest_projection = gmt::VectorI::SegmentProjection(*closest_edge.first, *closest_edge.second, circle->get_pos());
-        gmt::VectorI vector_response = (gmt::VectorI::Normal(*closest_edge.second, *closest_edge.first)).Normalize() * (gmt::VectorI::Distance(circle->get_pos(), closest_projection) +
+        gmt::VectorI closest_projection = gmt::VectorI::segment_projection(*closest_edge.first, *closest_edge.second, circle->get_pos());
+        gmt::VectorI vector_response = (gmt::VectorI::normal(*closest_edge.second, *closest_edge.first)).normalize() * (gmt::VectorI::Distance(circle->get_pos(), closest_projection) +
     circle->get_size()); VectorI vector_origin = (*closest_edge.first + *closest_edge.second) / T(2);
 
         return {Collision<T>::Response(polygon, circle, vector_origin, vector_response)};
@@ -99,48 +99,48 @@ std::vector<Collision<T>> Collision<T>::CircleOnPolygon(phy::Circle* circle, phy
         gmt::VerticesI triangle = triangles[i];
 
         // Collide if the center of the circle is in the polygon
-        if (gmt::VerticesI::PointInShape(triangle, gmt::VectorI(circle->get_pos()))) {
-            std::pair<std::shared_ptr<gmt::VectorI>, std::shared_ptr<gmt::VectorI>> closest_edge = gmt::VerticesI::ClosestEdge(triangle, circle->get_pos());
+        if (gmt::VerticesI::point_in_shape(triangle, gmt::VectorI(circle->get_pos()))) {
+            std::pair<std::shared_ptr<gmt::VectorI>, std::shared_ptr<gmt::VectorI>> closest_edge = gmt::VerticesI::closest_edge(triangle, circle->get_pos());
 
-            gmt::VectorI closest_projection = gmt::VectorI::SegmentProjection(*closest_edge.first, *closest_edge.second, circle->get_pos());
+            gmt::VectorI closest_projection = gmt::VectorI::segment_projection(*closest_edge.first, *closest_edge.second, circle->get_pos());
             gmt::VectorI vector_response =
-                (gmt::VectorI::Normal(*closest_edge.second, *closest_edge.first)).Normalize() * (gmt::VectorI::Distance(circle->get_pos(), closest_projection) + circle->get_size());
+                (gmt::VectorI::normal(*closest_edge.second, *closest_edge.first)).normalize() * (gmt::VectorI::distance(circle->get_pos(), closest_projection) + circle->get_size());
             VectorI vector_origin = (*closest_edge.first + *closest_edge.second) / T(2);
 
-            return {Collision<T>::Response(polygon, circle, vector_origin, vector_response)};
+            return {Collision<T>::response(polygon, circle, vector_origin, vector_response)};
         }
 
-        std::vector<std::pair<std::shared_ptr<gmt::VectorI>, std::shared_ptr<gmt::VectorI>>> pairs = triangle.Pairs();
+        std::vector<std::pair<std::shared_ptr<gmt::VectorI>, std::shared_ptr<gmt::VectorI>>> pairs = triangle.pairs();
         // Collide if one side of the polygon intersect with the circle
         for (int i = 0; i < pairs.size(); i++) {
-            std::pair<int, gmt::VectorI> test_intersect = gmt::VectorI::LineCercleIntersect(*pairs[i].first, *pairs[i].second, circle->get_pos(), circle->get_size());
+            std::pair<int, gmt::VectorI> test_intersect = gmt::VectorI::line_cercle_intersect(*pairs[i].first, *pairs[i].second, circle->get_pos(), circle->get_size());
 
             // Don't collide with any edge
             if (test_intersect.first == 0) { continue; }
 
             if (test_intersect.first == 1) {
                 // Collide at the middle of an edge
-                gmt::VectorI vector_response = (circle->get_pos() - test_intersect.second).Normalize() * (gmt::VectorI::Distance(circle->get_pos(), test_intersect.second) - circle->get_size());
-                collisions.push_back(Collision<T>::Response(polygon, circle, test_intersect.second, vector_response));
+                gmt::VectorI vector_response = (circle->get_pos() - test_intersect.second).normalize() * (gmt::VectorI::distance(circle->get_pos(), test_intersect.second) - circle->get_size());
+                collisions.push_back(Collision<T>::response(polygon, circle, test_intersect.second, vector_response));
                 break;
 
             } else if (test_intersect.first == 2) {
                 // Collide with the first point of the edge (current edge + last edge)
                 int last_edge = com::modulo(i - 1, pairs.size());
                 gmt::VectorI normals_average =
-                    gmt::VectorI::Normal(*pairs[last_edge].first, *pairs[last_edge].second).Normalize() + gmt::VectorI::Normal(*pairs[i].first, *pairs[i].second).Normalize();
-                gmt::VectorI vector_response = normals_average.Normalize() * (gmt::VectorI::Distance(circle->get_pos(), *pairs[i].first) - circle->get_size());
+                    gmt::VectorI::normal(*pairs[last_edge].first, *pairs[last_edge].second).normalize() + gmt::VectorI::normal(*pairs[i].first, *pairs[i].second).normalize();
+                gmt::VectorI vector_response = normals_average.normalize() * (gmt::VectorI::distance(circle->get_pos(), *pairs[i].first) - circle->get_size());
 
-                collisions.push_back(Collision<T>::Response(polygon, circle, test_intersect.second, -vector_response));
+                collisions.push_back(Collision<T>::response(polygon, circle, test_intersect.second, -vector_response));
                 break;
 
             } else if (test_intersect.first == 3) {
                 // Collide with the second point of the edge (current edge + next edge)
                 int next_edge = com::modulo(i + 1, pairs.size());
                 gmt::VectorI normals_average =
-                    gmt::VectorI::Normal(*pairs[i].first, *pairs[i].second).Normalize() + gmt::VectorI::Normal(*pairs[next_edge].first, *pairs[next_edge].second).Normalize();
-                gmt::VectorI vector_response = normals_average.Normalize() * (gmt::VectorI::Distance(circle->get_pos(), *pairs[i].second) - circle->get_size());
-                collisions.push_back(Collision<T>::Response(polygon, circle, test_intersect.second, -vector_response));
+                    gmt::VectorI::normal(*pairs[i].first, *pairs[i].second).normalize() + gmt::VectorI::normal(*pairs[next_edge].first, *pairs[next_edge].second).normalize();
+                gmt::VectorI vector_response = normals_average.normalize() * (gmt::VectorI::distance(circle->get_pos(), *pairs[i].second) - circle->get_size());
+                collisions.push_back(Collision<T>::response(polygon, circle, test_intersect.second, -vector_response));
                 break;
             }
         }
@@ -151,13 +151,13 @@ std::vector<Collision<T>> Collision<T>::CircleOnPolygon(phy::Circle* circle, phy
     return {};  // Not colliding
 }
 
-template std::vector<Collision<int>> Collision<int>::CircleOnPolygon(phy::Circle* circle, phy::Polygon* polygon);
-template std::vector<Collision<float>> Collision<float>::CircleOnPolygon(phy::Circle* circle, phy::Polygon* polygon);
-template std::vector<Collision<double>> Collision<double>::CircleOnPolygon(phy::Circle* circle, phy::Polygon* polygon);
+template std::vector<Collision<int>> Collision<int>::circle_on_polygon(phy::Circle* circle, phy::Polygon* polygon);
+template std::vector<Collision<float>> Collision<float>::circle_on_polygon(phy::Circle* circle, phy::Polygon* polygon);
+template std::vector<Collision<double>> Collision<double>::circle_on_polygon(phy::Circle* circle, phy::Polygon* polygon);
 
 /* Polygon / Polygon collision */
 template <typename T>
-std::vector<Collision<T>> Collision<T>::PolygonOnPolygon(phy::Polygon* polygonA, phy::Polygon* polygonB) {
+std::vector<Collision<T>> Collision<T>::polygon_on_polygon(phy::Polygon* polygonA, phy::Polygon* polygonB) {
     // SAT algorithm
     const std::vector<gmt::VerticesI> trianglesA = polygonA->get_polygons();
     const std::vector<gmt::VerticesI> trianglesB = polygonB->get_polygons();
@@ -169,14 +169,14 @@ std::vector<Collision<T>> Collision<T>::PolygonOnPolygon(phy::Polygon* polygonA,
 
         // Compute the normals of the Sub-PolygonA
         std::vector<VectorI> normalsA = {};
-        for (int i = 0; i < triangleA.vertices.size(); i++) { normalsA.push_back(VectorI::Normal(*triangleA.vertices[i])); }
+        for (int i = 0; i < triangleA.vertices.size(); i++) { normalsA.push_back(VectorI::normal(*triangleA.vertices[i])); }
 
         for (int b = 0; b < trianglesB.size(); b++) {
             gmt::VerticesI triangleB = trianglesB[b];
 
             // Add the normals of the Sub-PolygonB
             std::vector<VectorI> normalsAB = normalsA;
-            for (int i = 0; i < triangleB.vertices.size(); i++) { normalsAB.push_back(VectorI::Normal(*triangleB.vertices[i])); }
+            for (int i = 0; i < triangleB.vertices.size(); i++) { normalsAB.push_back(VectorI::normal(*triangleB.vertices[i])); }
 
             // Check if the intervals overlap
             for (int i = 0; i < normalsAB.size(); i++) {
@@ -185,8 +185,8 @@ std::vector<Collision<T>> Collision<T>::PolygonOnPolygon(phy::Polygon* polygonA,
                 std::vector<UnitI> dotsA = {};
                 std::vector<UnitI> dotsB = {};
 
-                for (int j = 0; j < triangleA.vertices.size(); j++) { dotsA.push_back(VectorI::Dot(*triangleA.vertices[j], normal)); }
-                for (int j = 0; j < triangleB.vertices.size(); j++) { dotsB.push_back(VectorI::Dot(*triangleB.vertices[j], normal)); }
+                for (int j = 0; j < triangleA.vertices.size(); j++) { dotsA.push_back(VectorI::dot(*triangleA.vertices[j], normal)); }
+                for (int j = 0; j < triangleB.vertices.size(); j++) { dotsB.push_back(VectorI::dot(*triangleB.vertices[j], normal)); }
 
                 const auto minmax_A = std::minmax_element(dotsA.begin(), dotsA.end());
                 const auto minmax_B = std::minmax_element(dotsB.begin(), dotsB.end());
@@ -202,19 +202,19 @@ std::vector<Collision<T>> Collision<T>::PolygonOnPolygon(phy::Polygon* polygonA,
             }
 
             // A collision is occuring
-            VectorI centroidA = triangleA.Centroid();
-            VectorI centroidB = triangleB.Centroid();
+            VectorI centroidA = triangleA.centroid();
+            VectorI centroidB = triangleB.centroid();
 
             // Compute the normal between the two shapes
-            VectorI normal = VectorI::Normal(centroidB - centroidA);
+            VectorI normal = VectorI::normal(centroidB - centroidA);
 
             // Project the points of each shape the normal
             std::vector<UnitI> dotsA = {};
             std::vector<UnitI> dotsB = {};
 
             // Determine the forward hull min and max index
-            for (int j = 0; j < triangleA.vertices.size(); j++) { dotsA.push_back(VectorI::Dot(*triangleA.vertices[j], normal)); }
-            for (int j = 0; j < triangleB.vertices.size(); j++) { dotsB.push_back(VectorI::Dot(*triangleB.vertices[j], normal)); }
+            for (int j = 0; j < triangleA.vertices.size(); j++) { dotsA.push_back(VectorI::dot(*triangleA.vertices[j], normal)); }
+            for (int j = 0; j < triangleB.vertices.size(); j++) { dotsB.push_back(VectorI::dot(*triangleB.vertices[j], normal)); }
 
             const auto minmax_A = std::minmax_element(dotsA.begin(), dotsA.end());
             const auto minmax_B = std::minmax_element(dotsB.begin(), dotsB.end());
@@ -239,9 +239,9 @@ std::vector<Collision<T>> Collision<T>::PolygonOnPolygon(phy::Polygon* polygonA,
                 for (int i = 0; i < fwdhull_B.size() - 1; i++) {
                     VectorI vectB1 = *triangleB.vertices[fwdhull_B[i]];
                     VectorI vectB2 = *triangleB.vertices[fwdhull_B[i + 1]];
-                    VectorI vectB = VectorI::SegmentProjection(vectA, vectB1, vectB2);
-                    if (VectorI::PointOnSegment(vectB1, vectB2, vectA)) {
-                        UnitI dist = VectorI::Distance(vectA, vectB);
+                    VectorI vectB = VectorI::segment_projection(vectA, vectB1, vectB2);
+                    if (VectorI::point_on_segment(vectB1, vectB2, vectA)) {
+                        UnitI dist = VectorI::distance(vectA, vectB);
                         if (dist < min_dist) {
                             min_dist = dist;
                             collision_origin = vectB;
@@ -258,9 +258,9 @@ std::vector<Collision<T>> Collision<T>::PolygonOnPolygon(phy::Polygon* polygonA,
                 for (int i = 0; i < fwdhull_A.size() - 1; i++) {
                     VectorI vectA1 = *triangleA.vertices[fwdhull_A[i]];
                     VectorI vectA2 = *triangleA.vertices[fwdhull_A[i + 1]];
-                    VectorI vectA = VectorI::SegmentProjection(vectB, vectA1, vectA2);
-                    if (VectorI::PointOnSegment(vectA1, vectA2, vectB)) {
-                        UnitI dist = VectorI::Distance(vectB, vectA);
+                    VectorI vectA = VectorI::segment_projection(vectB, vectA1, vectA2);
+                    if (VectorI::point_on_segment(vectA1, vectA2, vectB)) {
+                        UnitI dist = VectorI::distance(vectB, vectA);
                         if (dist < min_dist) {
                             min_dist = dist;
                             collision_origin = vectA;
@@ -270,17 +270,17 @@ std::vector<Collision<T>> Collision<T>::PolygonOnPolygon(phy::Polygon* polygonA,
                 }
             }
 
-            collisions.push_back(Collision<T>::Response(polygonA, polygonB, collision_origin, collision_normal));
+            collisions.push_back(Collision<T>::response(polygonA, polygonB, collision_origin, collision_normal));
         }
     }
     return collisions;
 }
-template std::vector<Collision<int>> Collision<int>::PolygonOnPolygon(phy::Polygon* polygonA, phy::Polygon* polygonB);
-template std::vector<Collision<float>> Collision<float>::PolygonOnPolygon(phy::Polygon* polygonA, phy::Polygon* polygonB);
-template std::vector<Collision<double>> Collision<double>::PolygonOnPolygon(phy::Polygon* polygonA, phy::Polygon* polygonB);
+template std::vector<Collision<int>> Collision<int>::polygon_on_polygon(phy::Polygon* polygonA, phy::Polygon* polygonB);
+template std::vector<Collision<float>> Collision<float>::polygon_on_polygon(phy::Polygon* polygonA, phy::Polygon* polygonB);
+template std::vector<Collision<double>> Collision<double>::polygon_on_polygon(phy::Polygon* polygonA, phy::Polygon* polygonB);
 
 template <typename T>
-Collision<T> Collision<T>::Response(phy::Corpse* lhs, phy::Corpse* rhs, const VectorI& origin, const VectorI& normal) {
+Collision<T> Collision<T>::response(phy::Corpse* lhs, phy::Corpse* rhs, const VectorI& origin, const VectorI& normal) {
     gmt::UnitI damping = (lhs->get_bounce() + rhs->get_bounce()) / gmt::UnitI(2);  // Damping is evenly distributed among the corpses
 
     /*
@@ -298,7 +298,7 @@ Collision<T> Collision<T>::Response(phy::Corpse* lhs, phy::Corpse* rhs, const Ve
             // gmt::VectorI temp_pos = corpse_a->get_last_pos();
 
             // corpse_a->set_last_pos(corpse_a->get_pos());
-            lhs->Drag(normal);
+            lhs->drag(normal);
             // corpse_a->Move(gmt::Mirrored_Point(temp_pos - corpse_a->get_pos(), vect_force) * damping);
 
         } else if (!rhs->get_fixed()) {
@@ -306,7 +306,7 @@ Collision<T> Collision<T>::Response(phy::Corpse* lhs, phy::Corpse* rhs, const Ve
             // gmt::VectorI temp_pos = corpse_b->get_last_pos();
 
             // corpse_b->set_last_pos(corpse_b->get_pos());
-            rhs->Drag(-normal);
+            rhs->drag(-normal);
             // corpse_b->Move(gmt::Mirrored_Point(temp_pos - corpse_b->get_pos(), vect_force) * damping);
         } else {
             // Both corpse_a and corpse_b are Fixed:
@@ -325,8 +325,8 @@ Collision<T> Collision<T>::Response(phy::Corpse* lhs, phy::Corpse* rhs, const Ve
         // corpse_a->set_last_pos(corpse_a->get_pos());
         // corpse_b->set_last_pos(corpse_b->get_pos());
 
-        lhs->Drag(normal * normal_mass_corpse_b / gmt::UnitI(2));
-        rhs->Drag(-normal * normal_mass_corpse_a / gmt::UnitI(2));
+        lhs->drag(normal * normal_mass_corpse_b / gmt::UnitI(2));
+        rhs->drag(-normal * normal_mass_corpse_a / gmt::UnitI(2));
         /*
         // Distance between corpses
         gmt::UnitI fDistance = gmt::Length(corpse_a->get_pos_x(), corpse_a->get_pos_y(), corpse_b->get_pos_x(), corpse_b->get_pos_y());
@@ -362,8 +362,8 @@ Collision<T> Collision<T>::Response(phy::Corpse* lhs, phy::Corpse* rhs, const Ve
     return Collision<T>(lhs, rhs, origin, normal);
 }
 
-template Collision<int> Collision<int>::Response(phy::Corpse* lhs, phy::Corpse* rhs, const VectorI& origin, const VectorI& normal);
-template Collision<float> Collision<float>::Response(phy::Corpse* lhs, phy::Corpse* rhs, const VectorI& origin, const VectorI& normal);
-template Collision<double> Collision<double>::Response(phy::Corpse* lhs, phy::Corpse* rhs, const VectorI& origin, const VectorI& normal);
+template Collision<int> Collision<int>::response(phy::Corpse* lhs, phy::Corpse* rhs, const VectorI& origin, const VectorI& normal);
+template Collision<float> Collision<float>::response(phy::Corpse* lhs, phy::Corpse* rhs, const VectorI& origin, const VectorI& normal);
+template Collision<double> Collision<double>::response(phy::Corpse* lhs, phy::Corpse* rhs, const VectorI& origin, const VectorI& normal);
 
 }  // namespace gmt

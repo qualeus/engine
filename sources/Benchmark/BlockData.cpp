@@ -3,14 +3,20 @@
 namespace bmk {
 
 BlockData::BlockData(std::string name, std::string file, int line) {
-    this->name = name;
-    this->file = file;
-    this->line = line;
+    m_name = name;
+    m_file = file;
+    m_line = line;
 }
 
-BlockData ::~BlockData() {}
-std::string BlockData::get_name() { return this->name; }
-std::string BlockData::get_file() { return this->file; }
-int BlockData::get_line() { return this->line; }
+BlockData ::~BlockData() { }
+std::string BlockData::get_name() {
+    return m_name;
+}
+std::string BlockData::get_file() {
+    return m_file;
+}
+int BlockData::get_line() {
+    return m_line;
+}
 
 }  // namespace bmk

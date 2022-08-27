@@ -13,32 +13,45 @@ const static int ID_POLYGON = 3;
 
 class Polygon : public Corpse {
    private:
-    gmt::VerticesI points;
-    std::vector<gmt::VerticesI> polygons;
+    gmt::VerticesI m_points;
+    std::vector<gmt::VerticesI> m_polygons;
 
    public:
-    Polygon(std::vector<gmt::VectorI> points = {}, gmt::UnitI mass = gmt::UnitI(1), gmt::UnitI damping = gmt::UnitI(1), gmt::UnitI speed_x = gmt::UnitI(0), gmt::UnitI speed_y = gmt::UnitI(0), gmt::UnitI rotation = gmt::UnitI(0), gmt::UnitI motor = gmt::UnitI(0), bool fixed = false,
-            bool tied = false, bool etherial = false);
+    Polygon(std::vector<gmt::VectorI> points = {},
+            gmt::UnitI mass = gmt::UnitI(1),
+            gmt::UnitI damping = gmt::UnitI(1),
+            gmt::UnitI speed_x = gmt::UnitI(0),
+            gmt::UnitI speed_y = gmt::UnitI(0),
+            gmt::UnitI rotation = gmt::UnitI(0),
+            gmt::UnitI motor = gmt::UnitI(0),
+            bool fixed = false,
+            bool tied = false,
+            bool etherial = false);
+
     Polygon& operator=(const Polygon& rhs);
+
     // virtual ~Polygon();
 
     const int get_class();
+
     static int id_class();
 
-    void Step();
-    void Stop();
-    void Bloc();
+    void step();
 
-    void Move(const gmt::VectorI& move);
-    void Drag(const gmt::VectorI& drag);
+    void stop();
 
-    void Turn(const gmt::UnitI& move);
-    void Rotate(const gmt::UnitI& rotate);
+    void bloc();
 
-    bool inBounds(const gmt::BoundsI& bounds) const;
-    bool Pointed(const gmt::VectorI& point) const;
+    void move(const gmt::VectorI& move);
+    void drag(const gmt::VectorI& drag);
 
-    void Generate();
+    void turn(const gmt::UnitI& move);
+    void rotate(const gmt::UnitI& rotate);
+
+    bool in_bounds(const gmt::BoundsI& bounds) const;
+    bool pointed(const gmt::VectorI& point) const;
+
+    void generate();
 
     int get_points_number() const;
     void add_point(gmt::VectorI point);
@@ -52,7 +65,7 @@ class Polygon : public Corpse {
     void set_polygons(std::vector<gmt::VerticesI> polygons);
     int get_polygons_size() const;
 
-    void UpdateBounds();
+    void update_bounds();
 
     std::vector<std::pair<std::shared_ptr<gmt::VectorI>, std::shared_ptr<gmt::VectorI>>> get_sides() const;
 };

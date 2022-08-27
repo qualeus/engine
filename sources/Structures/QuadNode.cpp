@@ -3,17 +3,21 @@
 namespace gmt {
 
 /* Vectors Operators: QuadTree=Copy */
-QuadNode& QuadNode::operator=(const QuadNode& rhs) { return *this; }
+QuadNode& QuadNode::operator=(const QuadNode& rhs) {
+    return *this;
+}
 
 /* Builder Constructor */
 QuadNode::QuadNode() {
-    this->childs = {nullptr, nullptr, nullptr, nullptr};
-    this->corpses = {};
+    childs = {nullptr, nullptr, nullptr, nullptr};
+    corpses = {};
 }
 
 /* Default Destructor */
 // QuadNode::~QuadNode() {}
 
-bool QuadNode::Leaf() { return !static_cast<bool>(this->childs[0]); }
+bool QuadNode::is_leaf() {
+    return !static_cast<bool>(childs[0]);
+}
 
 }  // namespace gmt

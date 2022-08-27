@@ -2,7 +2,7 @@
 #define Bounds_HPP
 
 #include "../Common/Maths.hpp"
-#include "Vector.hpp"
+#include "Vector2.hpp"
 
 namespace gmt {
 
@@ -26,24 +26,24 @@ class Bounds {
     Bounds();
     ~Bounds();
 
-    Vector<T> Size() const;
-    Bounds<T> Reorder() const;
-    Bounds<T> Clone() const;
+    Vector2<T> size() const;
+    Bounds<T> reorder() const;
+    Bounds<T> clone() const;
 
-    static bool PointInBounds(const Vector<T>& v1, const Bounds<T>& b2);
-    static bool PointOutBounds(const Vector<T>& v1, const Bounds<T>& b2);
+    static bool point_in_bounds(const Vector2<T>& v1, const Bounds<T>& b2);
+    static bool point_out_bounds(const Vector2<T>& v1, const Bounds<T>& b2);
 
-    static bool CircleInBounds(const T& r, const Vector<T>& v1, const Bounds<T>& b2);
-    static bool CircleOutBounds(const T& r, const Vector<T>& v1, const Bounds<T>& b2);
-    static bool CircleIntersectBounds(const T& r, const Vector<T>& v1, const Bounds<T>& b2);
+    static bool circle_in_bounds(const T& r, const Vector2<T>& v1, const Bounds<T>& b2);
+    static bool circle_out_bounds(const T& r, const Vector2<T>& v1, const Bounds<T>& b2);
+    static bool circle_intersect_bounds(const T& r, const Vector2<T>& v1, const Bounds<T>& b2);
 
-    static bool SegmentInBounds(const Vector<T>& v1, const Vector<T>& v2, const Bounds<T>& b2);
-    static bool SegmentOutBounds(const Vector<T>& v1, const Vector<T>& v2, const Bounds<T>& b2);
-    static bool SegmentIntersectBounds(const Vector<T>& v1, const Vector<T>& v2, const Bounds<T>& b2);
+    static bool segment_in_bounds(const Vector2<T>& v1, const Vector2<T>& v2, const Bounds<T>& b2);
+    static bool segment_out_bounds(const Vector2<T>& v1, const Vector2<T>& v2, const Bounds<T>& b2);
+    static bool segment_intersect_bounds(const Vector2<T>& v1, const Vector2<T>& v2, const Bounds<T>& b2);
 
-    static bool BoundsInBounds(const Bounds<T>& b1, const Bounds<T>& b2);
-    static bool BoundsOutBounds(const Bounds<T>& b1, const Bounds<T>& b2);
-    static bool BoundsIntersectBounds(const Bounds<T>& b1, const Bounds<T>& b2);
+    static bool bounds_in_bounds(const Bounds<T>& b1, const Bounds<T>& b2);
+    static bool bounds_out_bounds(const Bounds<T>& b1, const Bounds<T>& b2);
+    static bool bounds_intersect_bounds(const Bounds<T>& b1, const Bounds<T>& b2);
 };
 }  // namespace gmt
 

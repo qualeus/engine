@@ -3,8 +3,8 @@
 #include <string>
 #include "../include/Common/Maths.hpp"
 #include "../include/Common/String.hpp"
-#include "../include/Geometry/Vector.hpp"
-#include "../include/Geometry/Vertices.hpp"
+#include "../include/Geometry/Vector2.hpp"
+#include "../include/Geometry/Vertices2.hpp"
 #include "../include/Geometry/Bounds.hpp"
 
 

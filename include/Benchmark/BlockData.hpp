@@ -7,9 +7,9 @@ namespace bmk {
 
 class BlockData {
    private:
-    std::string name;
-    std::string file;
-    int line;
+    std::string m_name;
+    std::string m_file;
+    int m_line;
 
    public:
     BlockData(std::string name, std::string file, int line);
