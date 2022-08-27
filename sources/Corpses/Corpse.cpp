@@ -3,103 +3,194 @@ namespace phy {
 
 Corpse::Corpse(gmt::UnitI mass, gmt::UnitI damping, bool fixed, bool tied, bool etherial) {
     static int global_corpse_id = 0;
-    this->id = global_corpse_id++;
+    m_id = global_corpse_id++;
 
-    this->fixed = fixed;
-    this->tied = tied;
-    this->etherial = etherial;
+    m_fixed = fixed;
+    m_tied = tied;
+    m_etherial = etherial;
 
-    this->mass = mass;
-    this->friction = gmt::UnitI(1);
-    this->damping = com::minmax_filter(damping, gmt::UnitI(MIN_DAMPING), gmt::UnitI(MAX_DAMPING));
+    m_mass = mass;
+    m_friction = gmt::UnitI(1);
+    m_damping = com::minmax_filter(damping, gmt::UnitI(MIN_DAMPING), gmt::UnitI(MAX_DAMPING));
 
-    this->bounds = gmt::BoundsI();
+    m_bounds = gmt::BoundsI();
 }
+
 Corpse& Corpse::operator=(const Corpse& rhs) {
-    this->id = rhs.get_id();
+    m_id = rhs.get_id();
 
-    this->fixed = rhs.get_fixed();
-    this->tied = rhs.get_tied();
-    this->etherial = rhs.get_etherial();
+    m_fixed = rhs.get_fixed();
+    m_tied = rhs.get_tied();
+    m_etherial = rhs.get_etherial();
 
-    this->mass = rhs.get_mass();
-    this->friction = rhs.get_friction();
-    this->damping = rhs.get_damping();
+    m_mass = rhs.get_mass();
+    m_friction = rhs.get_friction();
+    m_damping = rhs.get_damping();
 
-    this->current_pos = rhs.get_pos();
-    this->last_pos = rhs.get_last_pos();
-    this->propulsor = rhs.get_propulsor();
+    m_current_pos = rhs.get_pos();
+    m_last_pos = rhs.get_last_pos();
+    m_propulsor = rhs.get_propulsor();
 
-    this->current_rotation = rhs.get_rotation();
-    this->last_rotation = rhs.get_last_rotation();
-    this->motor = rhs.get_motor();
+    m_current_rotation = rhs.get_rotation();
+    m_last_rotation = rhs.get_last_rotation();
+    m_motor = rhs.get_motor();
 
-    this->bounds = rhs.get_bounds();
+    m_bounds = rhs.get_bounds();
 
     return *this;
 }
 // Corpse::~Corpse() = default;
 
-int Corpse::get_id() const { return this->id; }
-int Corpse::get_class() const { return ID_CORPSE; }
-static int id_class() { return ID_CORPSE; }
+int Corpse::get_id() const {
+    return m_id;
+}
+int Corpse::get_class() const {
+    return ID_CORPSE;
+}
+static int id_class() {
+    return ID_CORPSE;
+}
 
-bool Corpse::get_fixed() const { return this->fixed; }
-void Corpse::set_fixed(bool fixed) { this->fixed = fixed; }
+bool Corpse::get_fixed() const {
+    return m_fixed;
+}
+void Corpse::set_fixed(bool fixed) {
+    m_fixed = fixed;
+}
 
-bool Corpse::get_etherial() const { return this->etherial; }
-void Corpse::set_etherial(bool etherial) { this->etherial = etherial; }
+bool Corpse::get_etherial() const {
+    return m_etherial;
+}
+void Corpse::set_etherial(bool etherial) {
+    m_etherial = etherial;
+}
 
-bool Corpse::get_tied() const { return this->tied; }
-void Corpse::set_tied(bool tied) { this->tied = tied; }
+bool Corpse::get_tied() const {
+    return m_tied;
+}
+void Corpse::set_tied(bool tied) {
+    m_tied = tied;
+}
 
-gmt::VectorI Corpse::get_pos() const { return this->current_pos; }
-gmt::UnitI Corpse::get_pos_x() const { return this->current_pos.x; }
-gmt::UnitI Corpse::get_pos_y() const { return this->current_pos.y; }
+gmt::VectorI Corpse::get_pos() const {
+    return m_current_pos;
+}
+gmt::UnitI Corpse::get_pos_x() const {
+    return m_current_pos.x;
+}
+gmt::UnitI Corpse::get_pos_y() const {
+    return m_current_pos.y;
+}
 
-void Corpse::set_pos(const gmt::VectorI& pos) { this->current_pos = pos; }
-void Corpse::set_pos_x(const gmt::UnitI& pos_x) { this->current_pos.x = pos_x; }
-void Corpse::set_pos_y(const gmt::UnitI& pos_y) { this->current_pos.y = pos_y; }
+void Corpse::set_pos(const gmt::VectorI& pos) {
+    m_current_pos = pos;
+}
+void Corpse::set_pos_x(const gmt::UnitI& pos_x) {
+    m_current_pos.x = pos_x;
+}
+void Corpse::set_pos_y(const gmt::UnitI& pos_y) {
+    m_current_pos.y = pos_y;
+}
 
-gmt::VectorI Corpse::get_last_pos() const { return this->last_pos; }
-gmt::UnitI Corpse::get_last_pos_x() const { return this->last_pos.x; }
-gmt::UnitI Corpse::get_last_pos_y() const { return this->last_pos.y; }
+gmt::VectorI Corpse::get_last_pos() const {
+    return m_last_pos;
+}
+gmt::UnitI Corpse::get_last_pos_x() const {
+    return m_last_pos.x;
+}
+gmt::UnitI Corpse::get_last_pos_y() const {
+    return m_last_pos.y;
+}
 
-void Corpse::set_last_pos(const gmt::VectorI& pos) { this->last_pos = pos; }
-void Corpse::set_last_pos_x(const gmt::UnitI& pos_x) { this->last_pos.x = pos_x; }
-void Corpse::set_last_pos_y(const gmt::UnitI& pos_y) { this->last_pos.y = pos_y; }
+void Corpse::set_last_pos(const gmt::VectorI& pos) {
+    m_last_pos = pos;
+}
+void Corpse::set_last_pos_x(const gmt::UnitI& pos_x) {
+    m_last_pos.x = pos_x;
+}
+void Corpse::set_last_pos_y(const gmt::UnitI& pos_y) {
+    m_last_pos.y = pos_y;
+}
 
-gmt::VectorI Corpse::get_diff_pos() const { return (this->get_pos() - this->get_last_pos()); }
-gmt::UnitI Corpse::get_diff_pos_x() const { return (this->get_pos_x() - this->get_last_pos_x()); }
-gmt::UnitI Corpse::get_diff_pos_y() const { return (this->get_pos_y() - this->get_last_pos_y()); }
+gmt::VectorI Corpse::get_diff_pos() const {
+    return (get_pos() - get_last_pos());
+}
+gmt::UnitI Corpse::get_diff_pos_x() const {
+    return (get_pos_x() - get_last_pos_x());
+}
+gmt::UnitI Corpse::get_diff_pos_y() const {
+    return (get_pos_y() - get_last_pos_y());
+}
 
-gmt::VectorI Corpse::get_propulsor() const { return this->propulsor; };
-void Corpse::set_propulsor(const gmt::VectorI& propulsor) { this->propulsor = propulsor; }
+gmt::VectorI Corpse::get_propulsor() const {
+    return m_propulsor;
+};
+void Corpse::set_propulsor(const gmt::VectorI& propulsor) {
+    m_propulsor = propulsor;
+}
 
-gmt::UnitI Corpse::get_rotation() const { return this->current_rotation; }
-void Corpse::set_rotation(const gmt::UnitI& current_rotation) { this->current_rotation = current_rotation; }
-gmt::UnitI Corpse::get_diff_rotation() const { return (this->get_rotation() - this->get_last_rotation()); }
+gmt::UnitI Corpse::get_rotation() const {
+    return m_current_rotation;
+}
+void Corpse::set_rotation(const gmt::UnitI& current_rotation) {
+    m_current_rotation = current_rotation;
+}
+gmt::UnitI Corpse::get_diff_rotation() const {
+    return (get_rotation() - get_last_rotation());
+}
 
-gmt::UnitI Corpse::get_last_rotation() const { return this->last_rotation; }
-void Corpse::set_last_rotation(const gmt::UnitI& last_rotation) { this->last_rotation = last_rotation; }
+gmt::UnitI Corpse::get_last_rotation() const {
+    return m_last_rotation;
+}
+void Corpse::set_last_rotation(const gmt::UnitI& last_rotation) {
+    m_last_rotation = last_rotation;
+}
 
-gmt::UnitI Corpse::get_motor() const { return this->motor; }
-void Corpse::set_motor(const gmt::UnitI& motor) { this->motor = motor; }
+gmt::UnitI Corpse::get_motor() const {
+    return m_motor;
+}
+void Corpse::set_motor(const gmt::UnitI& motor) {
+    m_motor = motor;
+}
 
-void Corpse::set_damping(const gmt::UnitI& damping) { this->damping = com::minmax_filter(damping, gmt::UnitI(MIN_DAMPING), gmt::UnitI(MAX_DAMPING)); }
-gmt::UnitI Corpse::get_damping() const { return this->damping; }
-gmt::UnitI Corpse::get_bounce() const { return gmt::UnitI(1) / this->damping; }
+void Corpse::set_damping(const gmt::UnitI& damping) {
+    m_damping = com::minmax_filter(damping, gmt::UnitI(MIN_DAMPING), gmt::UnitI(MAX_DAMPING));
+}
 
-gmt::UnitI Corpse::get_mass() const { return this->mass; }
-void Corpse::set_mass(const gmt::UnitI& mass) { this->mass = mass; }
+gmt::UnitI Corpse::get_damping() const {
+    return m_damping;
+}
 
-gmt::UnitI Corpse::get_friction() const { return this->friction; }
-void Corpse::set_friction(const gmt::UnitI& friction) { this->friction = friction; }
+gmt::UnitI Corpse::get_bounce() const {
+    return gmt::UnitI(1) / m_damping;
+}
 
-gmt::BoundsI Corpse::get_bounds() const { return this->bounds; }
+gmt::UnitI Corpse::get_mass() const {
+    return m_mass;
+}
 
-bool Corpse::Equals(const Corpse* other) { return this->get_id() == other->get_id(); }
+void Corpse::set_mass(const gmt::UnitI& mass) {
+    m_mass = mass;
+}
 
-inline bool Corpse::operator==(const Corpse* other) { return this->Equals(other); }
+gmt::UnitI Corpse::get_friction() const {
+    return m_friction;
+}
+
+void Corpse::set_friction(const gmt::UnitI& friction) {
+    m_friction = friction;
+}
+
+gmt::BoundsI Corpse::get_bounds() const {
+    return m_bounds;
+}
+
+bool Corpse::equals(const Corpse* other) {
+    return get_id() == other->get_id();
+}
+
+inline bool Corpse::operator==(const Corpse* other) {
+    return equals(other);
+}
 
 }  // namespace phy

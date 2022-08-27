@@ -15,24 +15,24 @@ const static int ID_CORPSE = 1;
 
 class Corpse {
    protected:
-    int id;
-    bool fixed;
-    bool tied;
-    bool etherial;
+    int m_id;
+    bool m_fixed;
+    bool m_tied;
+    bool m_etherial;
 
-    gmt::UnitI friction;
-    gmt::UnitI mass;
-    gmt::UnitI damping;
+    gmt::UnitI m_friction;
+    gmt::UnitI m_mass;
+    gmt::UnitI m_damping;
 
-    gmt::VectorI current_pos;
-    gmt::VectorI last_pos;
-    gmt::VectorI propulsor;
+    gmt::VectorI m_current_pos;
+    gmt::VectorI m_last_pos;
+    gmt::VectorI m_propulsor;
 
-    gmt::UnitI current_rotation;
-    gmt::UnitI last_rotation;
-    gmt::UnitI motor;
+    gmt::UnitI m_current_rotation;
+    gmt::UnitI m_last_rotation;
+    gmt::UnitI m_motor;
 
-    gmt::BoundsI bounds;
+    gmt::BoundsI m_bounds;
 
    public:
     explicit Corpse(gmt::UnitI mass, gmt::UnitI damping, bool fixed, bool tied, bool etherial);
@@ -53,18 +53,18 @@ class Corpse {
     bool get_tied() const;
     void set_tied(bool tied);
 
-    virtual void Step() = 0;
-    virtual void Stop() = 0;
-    virtual void Bloc() = 0;
+    virtual void step() = 0;
+    virtual void stop() = 0;
+    virtual void bloc() = 0;
 
-    virtual void Move(const gmt::VectorI& move) = 0;
-    virtual void Drag(const gmt::VectorI& drag) = 0;
+    virtual void move(const gmt::VectorI& move) = 0;
+    virtual void drag(const gmt::VectorI& drag) = 0;
 
-    virtual void Turn(const gmt::UnitI& turn) = 0;
-    virtual void Rotate(const gmt::UnitI& rotate) = 0;
+    virtual void turn(const gmt::UnitI& turn) = 0;
+    virtual void rotate(const gmt::UnitI& rotate) = 0;
 
-    virtual bool inBounds(const gmt::BoundsI& bounds) const = 0;
-    virtual bool Pointed(const gmt::VectorI& point) const = 0;
+    virtual bool in_bounds(const gmt::BoundsI& bounds) const = 0;
+    virtual bool pointed(const gmt::VectorI& point) const = 0;
 
     gmt::VectorI get_pos() const;
     gmt::UnitI get_pos_x() const;
@@ -111,7 +111,7 @@ class Corpse {
 
     gmt::BoundsI get_bounds() const;
 
-    bool Equals(const Corpse* other);
+    bool equals(const Corpse* other);
 };
 
 }  // namespace phy

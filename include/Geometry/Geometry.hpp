@@ -5,8 +5,8 @@
 #include "../Common/Maths.hpp"
 #include "Bounds.hpp"
 #include "Config.hpp"
-#include "Vector.hpp"
-#include "Vertices.hpp"
+#include "Vector2.hpp"
+#include "Vertices2.hpp"
 
 namespace gmt {
 
@@ -20,9 +20,9 @@ typedef float QUALEUS_PRECISION;
 #define MAX_GRAVITY_DISTANCE 1000000000 /* To avoid strange behaviours when comparing big numbers */
 
 using UnitI = QUALEUS_PRECISION;
-using VectorI = Vector<QUALEUS_PRECISION>;
+using VectorI = Vector2<QUALEUS_PRECISION>;
 using BoundsI = Bounds<QUALEUS_PRECISION>;
-using VerticesI = Vertices<QUALEUS_PRECISION>;
+using VerticesI = Vertices2<QUALEUS_PRECISION>;
 using CollisionI = Collision<QUALEUS_PRECISION>;
 
 }  // namespace gmt

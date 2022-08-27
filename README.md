@@ -94,8 +94,15 @@ The program has been tested with the following compilers:
 
 1. Download the project source or clone it with git: `git clone https://github.com/qualeus/engine.git`
 2. Create a build directory: `cd engine && mkdir build`
-3. Build the project with Cmake: `cd build && cmake -G "YOUR_COMPILER" -DBUILD_TESTS=ON ../..`
+3. Build the project with Cmake: `cd build && cmake -G "YOUR_COMPILER" -DBUILD_TESTS=ON ..`
 4. Build the targets and run tests: `cmake --build . && make CTEST_OUTPUT_ON_FAILURE=TRUE test`
+
+example with mingw64:
+
+```shell
+cd build && cmake -G "MinGW Makefiles" -DBUILD_TESTS=ON ..
+cmake --build . && mingw32-make CTEST_OUTPUT_ON_FAILURE=TRUE test
+```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

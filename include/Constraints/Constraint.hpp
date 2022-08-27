@@ -14,29 +14,39 @@ const static int ID_CONSTRAINT = 1;
 
 class Constraint {
    protected:
-    int id;
+    int m_id;
 
-    std::shared_ptr<phy::Corpse> corpse_a;
-    std::shared_ptr<phy::Corpse> corpse_b;
+    std::shared_ptr<phy::Corpse> m_corpse_a;
+    std::shared_ptr<phy::Corpse> m_corpse_b;
 
-    gmt::VectorI relative_pos_a;
-    gmt::VectorI relative_pos_b;
+    gmt::VectorI m_relative_pos_a;
+    gmt::VectorI m_relative_pos_b;
 
-    bool rotation_a;
-    bool rotation_b;
+    bool m_rotation_a;
+    bool m_rotation_b;
 
-    gmt::UnitI relative_angle_a;
-    gmt::UnitI relative_angle_b;
+    gmt::UnitI m_relative_angle_a;
+    gmt::UnitI m_relative_angle_b;
 
-    gmt::UnitI friction_a;
-    gmt::UnitI friction_b;
+    gmt::UnitI m_friction_a;
+    gmt::UnitI m_friction_b;
 
-    bool breaking;
-    bool broken;
+    bool m_breaking;
+    bool m_broken;
 
    public:
-    explicit Constraint(std::shared_ptr<phy::Corpse> corpse_a, std::shared_ptr<phy::Corpse> corpse_b, gmt::VectorI relative_pos_a, gmt::VectorI relative_pos_b, gmt::UnitI relative_angle_a,
-                        gmt::UnitI relative_angle_b, bool rotation_a, bool rotation_b, gmt::UnitI friction_a, gmt::UnitI friction_b, bool breaking);
+    explicit Constraint(std::shared_ptr<phy::Corpse> corpse_a,
+                        std::shared_ptr<phy::Corpse> corpse_b,
+                        gmt::VectorI relative_pos_a,
+                        gmt::VectorI relative_pos_b,
+                        gmt::UnitI relative_angle_a,
+                        gmt::UnitI relative_angle_b,
+                        bool rotation_a,
+                        bool rotation_b,
+                        gmt::UnitI friction_a,
+                        gmt::UnitI friction_b,
+                        bool breaking);
+
     inline bool operator==(const Constraint* other);
     Constraint& operator=(const Constraint& rhs);
 
@@ -44,9 +54,9 @@ class Constraint {
     virtual int get_class() const;
     static int id_class();
 
-    virtual void Step() = 0;
+    virtual void step() = 0;
 
-    bool Equals(const Constraint* other) const;
+    bool equals(const Constraint* other) const;
 
     std::shared_ptr<phy::Corpse> get_corpse_a() const;
     void set_corpse_a(std::shared_ptr<phy::Corpse> corpse_a);

@@ -1,7 +1,7 @@
 #include "test.hpp"
 
 template <typename T>
-void OperatorPlus() {
+void operator_plus() {
     gmt::Bounds<T> lhs = gmt::Bounds<T>(0, 0, 10, 10);
     gmt::Bounds<T> rhs = gmt::Bounds<T>(0, 10, 10, 20);
 
@@ -19,7 +19,7 @@ void OperatorPlus() {
 }
 
 template <typename T>
-void OperatorMinus() {
+void operator_minus() {
     gmt::Bounds<T> lhs = gmt::Bounds<T>(0, 0, 10, 10);
     gmt::Bounds<T> rhs = gmt::Bounds<T>(0, 10, 10, 20);
 
@@ -37,11 +37,11 @@ void OperatorMinus() {
 }
 
 int main() {
-    OperatorPlus<int>();
-    OperatorPlus<float>();
-    OperatorPlus<double>();
+    operator_plus<int>();
+    operator_plus<float>();
+    operator_plus<double>();
 
-    OperatorMinus<int>();
-    OperatorMinus<float>();
-    OperatorMinus<double>();
+    operator_minus<int>();
+    operator_minus<float>();
+    operator_minus<double>();
 }

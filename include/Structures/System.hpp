@@ -4,8 +4,6 @@
 #include "../Common/Maths.hpp"
 #include "../Constraints/Constraint.hpp"
 #include "../Constraints/Link.hpp"
-#include "../Constraints/Slider.hpp"
-#include "../Constraints/Spring.hpp"
 #include "../Corpses/Circle.hpp"
 #include "../Corpses/Corpse.hpp"
 #include "../Corpses/Polygon.hpp"
@@ -18,62 +16,62 @@ namespace phy {
 
 class System {
    private:
-    std::vector<std::shared_ptr<Corpse>> corpses;
-    std::vector<std::shared_ptr<Constraint>> constraints;
-    std::unordered_map<int, std::shared_ptr<Corpse>> references;
+    std::vector<std::shared_ptr<Corpse>> m_corpses;
+    std::vector<std::shared_ptr<Constraint>> m_constraints;
+    std::unordered_map<int, std::shared_ptr<Corpse>> m_references;
 
-    std::vector<gmt::NodePairs> quad_pairs;
-    std::vector<gmt::CollisionI> collisions;
+    std::vector<gmt::NodePairs> m_quad_pairs;
+    std::vector<gmt::CollisionI> m_collisions;
 
-    gmt::QuadTree quadtree;
-    gmt::BoundsI limits;
+    gmt::QuadTree m_quadtree;
+    gmt::BoundsI m_limits;
 
-    bool gravity;
-    bool enable_limits;
-    gmt::UnitI LS = 2.998e+8;  // 2,998 * 10e+8
-    gmt::UnitI G = 1.6e-2;     // 6.7 * 10e-11
+    bool m_gravity;
+    bool m_enable_limits;
+    gmt::UnitI m_ls = 2.998e+8;  // 2,998 * 10e+8
+    gmt::UnitI m_g = 1.6e-2;     // 6.7 * 10e-11
 
-    gmt::UnitI force_x;
-    gmt::UnitI force_y;
+    gmt::UnitI m_force_x;
+    gmt::UnitI m_force_y;
 
-    gmt::UnitI dt = 1.0f;
-    double t = 0.0;
+    gmt::UnitI m_dt = 1.0f;
+    double m_t = 0.0;
 
-    int collision_accuracy = 10;
-    int constraint_accuracy = 1;
+    int m_collision_accuracy = 10;
+    int m_constraint_accuracy = 1;
 
    public:
-    System(bool gravity = false,                    //
-           gmt::UnitI force_x = gmt::UnitI(0),      //
-           gmt::UnitI force_y = gmt::UnitI(0),      //
-           gmt::UnitI limit_x = gmt::UnitI(10000),  //
-           gmt::UnitI limit_y = gmt::UnitI(10000),  //
-           int quadtree_max_count = 10,             //
-           int quadtree_max_depth = 10);            //
+    System(bool gravity = false,
+           gmt::UnitI force_x = gmt::UnitI(0),
+           gmt::UnitI force_y = gmt::UnitI(0),
+           gmt::UnitI limit_x = gmt::UnitI(10000),
+           gmt::UnitI limit_y = gmt::UnitI(10000),
+           int quadtree_max_count = 10,
+           int quadtree_max_depth = 10);
 
     System(const System& other);
 
     System& operator=(const System& rhs);
     virtual ~System();
 
-    void Step();
-    void UpdateTime();
-    void CheckLimits();
-    void CorpsesStep();
-    void ForcesStep();
-    void ConstraintsStep();
-    void CorpseStop(int i);
-    void CorpseUpdateBounds(int i);
-    void PairsStep();
-    void QuadPairsStep();
-    void ThreadPairsStep(int depth, int begin, int end);
-    void Remove(int i);
-    void Clear();
+    void step();
+    void update_time();
+    void check_limits();
+    void corpses_step();
+    void forces_step();
+    void constraints_step();
+    void corpse_stop(int i);
+    void corpse_update_bounds(int i);
+    void pairs_step();
+    void quad_pairs_step();
+    void thread_pairs_step(int depth, int begin, int end);
+    void remove(int i);
+    void clear();
 
-    void Gravity(std::shared_ptr<Corpse> a, std::shared_ptr<Corpse> b);
+    void gravity(std::shared_ptr<Corpse> a, std::shared_ptr<Corpse> b);
 
-    void InitQuadTree();
-    void StepQuadTree();
+    void init_quad_tree();
+    void step_quad_tree();
     gmt::QuadTree* get_quadtree();
 
     gmt::UnitI get_dt() const;
@@ -92,11 +90,11 @@ class System {
     bool get_gravity() const;
     void set_gravity(bool gravity);
 
-    gmt::UnitI get_LS() const;
-    void set_LS(gmt::UnitI LS);
+    gmt::UnitI get_ls() const;
+    void set_ls(gmt::UnitI LS);
 
-    gmt::UnitI get_G() const;
-    void set_G(gmt::UnitI G);
+    gmt::UnitI get_g() const;
+    void set_g(gmt::UnitI G);
 
     int get_collision_accuracy() const;
     void set_collision_accuracy(int collision_accuracy);
@@ -113,16 +111,12 @@ class System {
     int get_quad_pairs_size() const;
     int get_quad_pairs_size(int depth) const;
 
-    void addCorpse(Polygon polygon);
-    void addCorpse(Circle circle);
-
-    void addConstraint(Link link);
-    void addConstraint(Spring spring);
-    void addConstraint(Slider slider);
-
-    void add_constraint(std::shared_ptr<Constraint> constraint);
-
+    void add_corpse(Polygon polygon);
+    void add_corpse(Circle circle);
     void add_corpse(std::shared_ptr<Corpse> corpse);
+
+    void add_constraint(Link link);
+    void add_constraint(std::shared_ptr<Constraint> constraint);
 
     gmt::BoundsI get_limits() const;
     void set_limits(gmt::BoundsI limits);

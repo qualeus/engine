@@ -6,10 +6,14 @@ bool com::float_equals(float a, float b, float sigma) {
 }
 
 /* Convert degree to radian: deg = rad * (PI/180) */
-float com::degree_to_radian(float degree) { return degree * (PI / 180); }
+float com::degree_to_radian(float degree) {
+    return degree * (PI / 180);
+}
 
 /* Convert degree to radian: rad = deg * (180/PI) */
-float com::radian_to_degree(float radian) { return radian * (180 / PI); }
+float com::radian_to_degree(float radian) {
+    return radian * (180 / PI);
+}
 
 /* Return the float with a designed number of digits behind the comma */
 float com::digits_comma(float number, int digits) {
@@ -24,9 +28,13 @@ unsigned com::modulo(int value, unsigned m) {
     return mod;
 }
 
-int com::rand_interval(int value) { return com::modulo(std::rand(), value); }
+int com::rand_interval(int value) {
+    return com::modulo(std::rand(), value);
+}
 
-int com::rand_interval_centered(int value) { return com::modulo(std::rand(), value) - static_cast<int>(value / 2.0f); }
+int com::rand_interval_centered(int value) {
+    return com::modulo(std::rand(), value) - static_cast<int>(value / 2.0f);
+}
 
 /* Return the cyclic interval in indexes */
 /*

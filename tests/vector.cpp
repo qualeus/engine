@@ -1,104 +1,104 @@
 #include "test.hpp"
 
 template <typename T>
-void OperatorPlus() {
-    gmt::Vector<T> lhs = gmt::Vector<T>(1, 2);
-    gmt::Vector<T> rhs = gmt::Vector<T>(1, 3);
+void operator_plus() {
+    gmt::Vector2<T> lhs = gmt::Vector2<T>(1, 2);
+    gmt::Vector2<T> rhs = gmt::Vector2<T>(1, 3);
 
-    gmt::Vector<T> test_result = lhs + rhs;
-    gmt::Vector<T> true_result = gmt::Vector<T>(2, 5);
+    gmt::Vector2<T> test_result = lhs + rhs;
+    gmt::Vector2<T> true_result = gmt::Vector2<T>(2, 5);
     ASSERT_EQUAL(true_result, test_result);
 
     test_result = rhs + lhs;
-    true_result = gmt::Vector<T>(2, 5);
+    true_result = gmt::Vector2<T>(2, 5);
     ASSERT_EQUAL(true_result, test_result);
 
     test_result = rhs + rhs;
-    true_result = gmt::Vector<T>(2, 6);
+    true_result = gmt::Vector2<T>(2, 6);
     ASSERT_EQUAL(true_result, test_result);
 }
 
 template <typename T>
-void OperatorMinus() {
-    gmt::Vector<T> lhs = gmt::Vector<T>(1, 2);
-    gmt::Vector<T> rhs = gmt::Vector<T>(1, 3);
+void operator_minus() {
+    gmt::Vector2<T> lhs = gmt::Vector2<T>(1, 2);
+    gmt::Vector2<T> rhs = gmt::Vector2<T>(1, 3);
 
-    gmt::Vector<T> test_result = lhs - rhs;
-    gmt::Vector<T> true_result = gmt::Vector<T>(0, -1);
+    gmt::Vector2<T> test_result = lhs - rhs;
+    gmt::Vector2<T> true_result = gmt::Vector2<T>(0, -1);
     ASSERT_EQUAL(true_result, test_result);
 
     test_result = rhs - lhs;
-    true_result = gmt::Vector<T>(0, 1);
+    true_result = gmt::Vector2<T>(0, 1);
     ASSERT_EQUAL(true_result, test_result);
 
     test_result = rhs - rhs;
-    true_result = gmt::Vector<T>(0, 0);
+    true_result = gmt::Vector2<T>(0, 0);
     ASSERT_EQUAL(true_result, test_result);
 }
 
 template <typename T>
-void FunctionDot() {
-    T test_result = gmt::Vector<T>::Dot(gmt::Vector<T>(), gmt::Vector<T>());
+void function_dot() {
+    T test_result = gmt::Vector2<T>::dot(gmt::Vector2<T>(), gmt::Vector2<T>());
     T true_result = T(0);
     ASSERT_EQUAL(true_result, test_result);
 
-    test_result = gmt::Vector<T>::Dot(gmt::Vector<T>(15, 7), gmt::Vector<T>(4, 78));
+    test_result = gmt::Vector2<T>::dot(gmt::Vector2<T>(15, 7), gmt::Vector2<T>(4, 78));
     true_result = T(606);
     ASSERT_EQUAL(true_result, test_result);
 
-    test_result = gmt::Vector<T>::Dot(gmt::Vector<T>(84, 14), gmt::Vector<T>(878, 1105));
+    test_result = gmt::Vector2<T>::dot(gmt::Vector2<T>(84, 14), gmt::Vector2<T>(878, 1105));
     true_result = T(89222);
     ASSERT_EQUAL(true_result, test_result);
 
-    test_result = gmt::Vector<T>::Dot(gmt::Vector<T>(-15, -45), gmt::Vector<T>(-12, 0));
+    test_result = gmt::Vector2<T>::dot(gmt::Vector2<T>(-15, -45), gmt::Vector2<T>(-12, 0));
     true_result = T(180);
     ASSERT_EQUAL(true_result, test_result);
 }
 
 template <typename T>
-void FunctionCross() {
-    T test_result = gmt::Vector<T>::Cross(gmt::Vector<T>(), gmt::Vector<T>());
+void function_cross() {
+    T test_result = gmt::Vector2<T>::cross(gmt::Vector2<T>(), gmt::Vector2<T>());
     T true_result = T(0);
     ASSERT_EQUAL(true_result, test_result);
 
-    test_result = gmt::Vector<T>::Cross(gmt::Vector<T>(15, 7), gmt::Vector<T>(4, 78));
+    test_result = gmt::Vector2<T>::cross(gmt::Vector2<T>(15, 7), gmt::Vector2<T>(4, 78));
     true_result = T(1142);
     ASSERT_EQUAL(true_result, test_result);
 
-    test_result = gmt::Vector<T>::Cross(gmt::Vector<T>(84, 14), gmt::Vector<T>(878, 1105));
+    test_result = gmt::Vector2<T>::cross(gmt::Vector2<T>(84, 14), gmt::Vector2<T>(878, 1105));
     true_result = T(80528);
     ASSERT_EQUAL(true_result, test_result);
 
-    test_result = gmt::Vector<T>::Cross(gmt::Vector<T>(-15, -45), gmt::Vector<T>(-12, 0));
+    test_result = gmt::Vector2<T>::cross(gmt::Vector2<T>(-15, -45), gmt::Vector2<T>(-12, 0));
     true_result = T(-540);
     ASSERT_EQUAL(true_result, test_result);
 }
 
 template <typename T>
-void FunctionSegmentProjection() {
-    gmt::Vector<T> test_result = gmt::Vector<T>::SegmentProjection(gmt::Vector<T>(4, 3), gmt::Vector<T>(0, 0), gmt::Vector<T>(4, 0));
-    gmt::Vector<T> true_result = gmt::Vector<T>(4, 0);
+void function_segment_projection() {
+    gmt::Vector2<T> test_result = gmt::Vector2<T>::segment_projection(gmt::Vector2<T>(4, 3), gmt::Vector2<T>(0, 0), gmt::Vector2<T>(4, 0));
+    gmt::Vector2<T> true_result = gmt::Vector2<T>(4, 0);
     ASSERT_EQUAL(true_result, test_result);
 }
 
 int main() {
-    OperatorPlus<int>();
-    OperatorPlus<float>();
-    OperatorPlus<double>();
+    operator_plus<int>();
+    operator_plus<float>();
+    operator_plus<double>();
 
-    OperatorMinus<int>();
-    OperatorMinus<float>();
-    OperatorMinus<double>();
+    operator_minus<int>();
+    operator_minus<float>();
+    operator_minus<double>();
 
-    FunctionDot<int>();
-    FunctionDot<float>();
-    FunctionDot<double>();
+    function_dot<int>();
+    function_dot<float>();
+    function_dot<double>();
 
-    FunctionCross<int>();
-    FunctionCross<float>();
-    FunctionCross<double>();
+    function_cross<int>();
+    function_cross<float>();
+    function_cross<double>();
 
-    FunctionSegmentProjection<int>();
-    FunctionSegmentProjection<float>();
-    FunctionSegmentProjection<double>();
+    function_segment_projection<int>();
+    function_segment_projection<float>();
+    function_segment_projection<double>();
 }

@@ -31,10 +31,10 @@ class Polygon;
 namespace gmt {
 
 template <typename T>
-class Vector;
+class Vector2;
 
 template <typename T>
-class Vertices;
+class Vertices2;
 
 template <typename T>
 class Bounds;
@@ -53,12 +53,19 @@ class QuadNode;
 namespace com {
 
 bool float_equals(float a, float b, float sigma = 0.1f);
+
 float degree_to_radian(float degree);
+
 float radian_to_degree(float radian);
+
 float digits_comma(float number, int digits);
+
 std::vector<int> cyclic_indexes(int min, int max, int size);
+
 unsigned modulo(int value, unsigned m);
+
 int rand_interval(int value);
+
 int rand_interval_centered(int value);
 
 std::vector<int> interpolate_array(const std::vector<int> &array_a, const std::vector<int> &array_b, const float &rate);

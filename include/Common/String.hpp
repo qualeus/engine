@@ -55,7 +55,7 @@ struct string<std::vector<T>> {
     }
 };
 
-/* Partially specialized template for Vector of Pairs */
+/* Partially specialized template for Vector2 of Pairs */
 template <typename A, typename B>
 struct string<std::vector<std::pair<A, B>>> {
     static std::string str(std::vector<std::pair<A, B>> param) {
@@ -70,35 +70,35 @@ struct string<std::vector<std::pair<A, B>>> {
     }
 };
 
-/* Partially specialized template for gmt::Vector */
+/* Partially specialized template for gmt::Vector2 */
 template <typename T>
-struct string<gmt::Vector<T>> {
-    static std::string str(gmt::Vector<T> param) {
+struct string<gmt::Vector2<T>> {
+    static std::string str(gmt::Vector2<T> param) {
         std::ostringstream oss;
-        oss << "gmt::Vector { " << param.x << " ; " << param.y << " }";
+        oss << "gmt::Vector2 { " << param.x << " ; " << param.y << " }";
         return oss.str();
     }
 };
 
-/* Partially specialized template for shared_ptr of gmt::Vector */
+/* Partially specialized template for shared_ptr of gmt::Vector2 */
 template <typename T>
-struct string<std::shared_ptr<gmt::Vector<T>>> {
-    static std::string str(std::shared_ptr<gmt::Vector<T>> param) {
+struct string<std::shared_ptr<gmt::Vector2<T>>> {
+    static std::string str(std::shared_ptr<gmt::Vector2<T>> param) {
         std::ostringstream oss;
         oss << "std::shared_ptr ( " << com::to_string(*param) << " )";
         return oss.str();
     }
 };
 
-/* Partially specialized template for gmt::Vertices */
+/* Partially specialized template for gmt::Vertices2 */
 template <typename T>
-struct string<gmt::Vertices<T>> {
-    static std::string str(gmt::Vertices<T> param) {
+struct string<gmt::Vertices2<T>> {
+    static std::string str(gmt::Vertices2<T> param) {
         std::ostringstream oss;
-        oss << "gmt::Vertices { ";
+        oss << "gmt::Vertices2 { ";
         if (!param.vertices.empty()) {
-            std::transform(param.vertices.begin(), param.vertices.end() - 1, std::ostream_iterator<std::string>(oss, ", "), com::to_string<std::shared_ptr<gmt::Vector<T>>>);
-            oss << com::to_string<std::shared_ptr<gmt::Vector<T>>>(param.vertices.back());
+            std::transform(param.vertices.begin(), param.vertices.end() - 1, std::ostream_iterator<std::string>(oss, ", "), com::to_string<std::shared_ptr<gmt::Vector2<T>>>);
+            oss << com::to_string<std::shared_ptr<gmt::Vector2<T>>>(param.vertices.back());
         }
         oss << " }";
         return oss.str();
