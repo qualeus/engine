@@ -1,12 +1,13 @@
+#include "../include/Geometry/Vertices2.hpp"
 #include "test.hpp"
 
 template <typename T>
 void function_centroid() {
     gmt::Vertices2<T> square = gmt::Vertices2<T>({
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 0)),  // vertex 1
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 0)),  // vertex 2
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 4)),  // vertex 3
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 4))   // vertex 4
+        gmt::Vector2<T>(0, 0),  // vertex 1
+        gmt::Vector2<T>(4, 0),  // vertex 2
+        gmt::Vector2<T>(4, 4),  // vertex 3
+        gmt::Vector2<T>(0, 4)   // vertex 4
     });
 
     gmt::Vector2<T> test_result = square.centroid();
@@ -17,10 +18,10 @@ void function_centroid() {
 template <typename T>
 void function_average() {
     gmt::Vertices2<T> square = gmt::Vertices2<T>({
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 0)),  // vertex 1
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 0)),  // vertex 2
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 4)),  // vertex 3
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 4))   // vertex 4
+        gmt::Vector2<T>(0, 0),  // vertex 1
+        gmt::Vector2<T>(4, 0),  // vertex 2
+        gmt::Vector2<T>(4, 4),  // vertex 3
+        gmt::Vector2<T>(0, 4)   // vertex 4
     });
 
     gmt::Vector2<T> test_result = square.average();
@@ -31,10 +32,10 @@ void function_average() {
 template <typename T>
 void function_convex() {
     gmt::Vertices2<T> square = gmt::Vertices2<T>({
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 0)),  // vertex 1
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 0)),  // vertex 2
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 4)),  // vertex 3
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 4))   // vertex 4
+        gmt::Vector2<T>(0, 0),  // vertex 1
+        gmt::Vector2<T>(4, 0),  // vertex 2
+        gmt::Vector2<T>(4, 4),  // vertex 3
+        gmt::Vector2<T>(0, 4)   // vertex 4
     });
 
     bool test_result = square.convex();
@@ -45,10 +46,10 @@ void function_convex() {
 template <typename T>
 void function_area() {
     gmt::Vertices2<T> square = gmt::Vertices2<T>({
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 0)),  // vertex 1
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 0)),  // vertex 2
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 4)),  // vertex 3
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 4))   // vertex 4
+        gmt::Vector2<T>(0, 0),  // vertex 1
+        gmt::Vector2<T>(4, 0),  // vertex 2
+        gmt::Vector2<T>(4, 4),  // vertex 3
+        gmt::Vector2<T>(0, 4)   // vertex 4
     });
 
     T test_result = square.area();
@@ -59,14 +60,14 @@ void function_area() {
 template <typename T>
 void function_sizes() {
     gmt::Vertices2<T> square = gmt::Vertices2<T>({
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 0)),  // vertex 1
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 0)),  // vertex 2
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 4)),  // vertex 3
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 4))   // vertex 4
+        gmt::Vector2<T>(0, 0),  // vertex 1
+        gmt::Vector2<T>(4, 0),  // vertex 2
+        gmt::Vector2<T>(4, 4),  // vertex 3
+        gmt::Vector2<T>(0, 4)   // vertex 4
     });
 
-    std::vector<T> test_result = square.sizes();
-    std::vector<T> true_result = {static_cast<T>(4), static_cast<T>(4), static_cast<T>(4), static_cast<T>(4)};
+    com::vec<T> test_result = square.sizes();
+    com::vec<T> true_result = {static_cast<T>(4), static_cast<T>(4), static_cast<T>(4), static_cast<T>(4)};
 
     ASSERT_EQUAL(true_result, test_result);
 }
@@ -74,10 +75,10 @@ void function_sizes() {
 template <typename T>
 void function_limits() {
     gmt::Vertices2<T> square = gmt::Vertices2<T>({
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 0)),  // vertex 1
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 0)),  // vertex 2
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 4)),  // vertex 3
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 4))   // vertex 4
+        gmt::Vector2<T>(0, 0),  // vertex 1
+        gmt::Vector2<T>(4, 0),  // vertex 2
+        gmt::Vector2<T>(4, 4),  // vertex 3
+        gmt::Vector2<T>(0, 4)   // vertex 4
     });
 
     gmt::Bounds<T> test_result = square.limits();
@@ -89,19 +90,19 @@ void function_limits() {
 template <typename T>
 void function_reorder() {
     gmt::Vertices2<T> test_result = gmt::Vertices2<T>({
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 4)),  // vertex 1
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 4)),  // vertex 2
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 0)),  // vertex 3
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 0))   // vertex 4
+        gmt::Vector2<T>(0, 4),  // vertex 1
+        gmt::Vector2<T>(4, 4),  // vertex 2
+        gmt::Vector2<T>(4, 0),  // vertex 3
+        gmt::Vector2<T>(0, 0)   // vertex 4
     });
 
     test_result.reorder();
 
     gmt::Vertices2<T> true_result = gmt::Vertices2<T>({
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 4)),  // vertex 1
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 4)),  // vertex 2
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 0)),  // vertex 3
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 0))   // vertex 4
+        gmt::Vector2<T>(0, 4),  // vertex 1
+        gmt::Vector2<T>(4, 4),  // vertex 2
+        gmt::Vector2<T>(4, 0),  // vertex 3
+        gmt::Vector2<T>(0, 0)   // vertex 4
     });
 
     ASSERT_EQUAL(true_result, test_result);
@@ -110,19 +111,19 @@ void function_reorder() {
 template <typename T>
 void function_translate() {
     gmt::Vertices2<T> test_result = gmt::Vertices2<T>({
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 0)),  // vertex 1
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 0)),  // vertex 2
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 4)),  // vertex 3
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 4))   // vertex 4
+        gmt::Vector2<T>(0, 0),  // vertex 1
+        gmt::Vector2<T>(4, 0),  // vertex 2
+        gmt::Vector2<T>(4, 4),  // vertex 3
+        gmt::Vector2<T>(0, 4)   // vertex 4
     });
 
     test_result.translate(gmt::Vector2<T>(3, 2));
 
     gmt::Vertices2<T> true_result = gmt::Vertices2<T>({
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(3, 2)),  // vertex 1
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(7, 2)),  // vertex 2
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(7, 6)),  // vertex 3
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(3, 6))   // vertex 4
+        gmt::Vector2<T>(3, 2),  // vertex 1
+        gmt::Vector2<T>(7, 2),  // vertex 2
+        gmt::Vector2<T>(7, 6),  // vertex 3
+        gmt::Vector2<T>(3, 6)   // vertex 4
     });
 
     ASSERT_EQUAL(true_result, test_result);
@@ -131,19 +132,19 @@ void function_translate() {
 template <typename T>
 void function_rotate() {
     gmt::Vertices2<T> test_result = gmt::Vertices2<T>({
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 0)),  // vertex 1
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 0)),  // vertex 2
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 4)),  // vertex 3
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 4))   // vertex 4
+        gmt::Vector2<T>(0, 0),  // vertex 1
+        gmt::Vector2<T>(4, 0),  // vertex 2
+        gmt::Vector2<T>(4, 4),  // vertex 3
+        gmt::Vector2<T>(0, 4)   // vertex 4
     });
 
     test_result.rotate(static_cast<T>(PI), gmt::Vector2<T>(2, 2));
 
     gmt::Vertices2<T> true_result = gmt::Vertices2<T>({
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 0)),  // vertex 1
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 0)),  // vertex 2
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 4)),  // vertex 3
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 4))   // vertex 4
+        gmt::Vector2<T>(0, 0),  // vertex 1
+        gmt::Vector2<T>(4, 0),  // vertex 2
+        gmt::Vector2<T>(4, 4),  // vertex 3
+        gmt::Vector2<T>(0, 4)   // vertex 4
     });
 
     ASSERT_EQUAL(true_result, test_result);
@@ -152,19 +153,19 @@ void function_rotate() {
 template <typename T>
 void function_scale() {
     gmt::Vertices2<T> test_result = gmt::Vertices2<T>({
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 0)),  // vertex 1
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 0)),  // vertex 2
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(4, 4)),  // vertex 3
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(0, 4))   // vertex 4
+        gmt::Vector2<T>(0, 0),  // vertex 1
+        gmt::Vector2<T>(4, 0),  // vertex 2
+        gmt::Vector2<T>(4, 4),  // vertex 3
+        gmt::Vector2<T>(0, 4)   // vertex 4
     });
 
     test_result.scale(static_cast<T>(2), gmt::Vector2<T>(2, 2));
 
     gmt::Vertices2<T> true_result = gmt::Vertices2<T>({
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(-2, -2)),  // vertex 1
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(6, -2)),   // vertex 2
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(6, 6)),    // vertex 3
-        std::make_shared<gmt::Vector2<T>>(gmt::Vector2<T>(-2, 6))    // vertex 4
+        gmt::Vector2<T>(-2, -2),  // vertex 1
+        gmt::Vector2<T>(6, -2),   // vertex 2
+        gmt::Vector2<T>(6, 6),    // vertex 3
+        gmt::Vector2<T>(-2, 6)    // vertex 4
     });
 
     ASSERT_EQUAL(true_result, test_result);

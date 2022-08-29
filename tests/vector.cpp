@@ -1,3 +1,4 @@
+#include "../include/Geometry/Vector2.hpp"
 #include "test.hpp"
 
 template <typename T>

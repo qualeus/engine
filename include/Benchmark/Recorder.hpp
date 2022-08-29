@@ -12,7 +12,7 @@ class Recorder : public Performance {
    public:
     static Recorder root;
     static Recorder *last;
-    Recorder(std::shared_ptr<BlockData> bloc);
+    Recorder(com::sptr<BlockData> bloc);
     ~Recorder();
     void reset();
 };
@@ -23,9 +23,9 @@ static BlockData perf = BlockData("Global Root", __FILE__, __LINE__);
 }  // namespace bmk
 
 // Tracking a single task
-#define Record(name) Recorder __perf__{std::make_shared<bmk::BlockData>(bmk::BlockData(name, __FILE__, __LINE__))};
+#define Record(name) Recorder __perf__{com::make_sptr<bmk::BlockData>(bmk::BlockData(name, __FILE__, __LINE__))};
 
 // Track and group several micro tasks
-// #define RecordCluster(name) Recorder __perf__{std::make_shared<bmk::BlockData>(bmk::BlockData(name , __FILE__, __LINE__))};;
+// #define RecordCluster(name) Recorder __perf__{com::make_sptr<bmk::BlockData>(bmk::BlockData(name , __FILE__, __LINE__))};;
 
 #endif

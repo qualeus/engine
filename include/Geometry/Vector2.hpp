@@ -11,19 +11,25 @@ class Vector2 {
     T x;
     T y;
 
+    Vector2(const T& x, const T& y);
+    Vector2();
+
     Vector2<T> operator+() const;
     Vector2<T> operator-() const;
+
     Vector2<T> operator+(const Vector2<T>& other) const;
     Vector2<T> operator-(const Vector2<T>& other) const;
     Vector2<T> operator*(const T& other) const;
     Vector2<T> operator/(const T& other) const;
 
+    Vector2<T>& operator+=(const Vector2<T>& other);
+    Vector2<T>& operator-=(const Vector2<T>& other);
+    Vector2<T>& operator*=(const T& other);
+    Vector2<T>& operator/=(const T& other);
+
     bool operator==(const Vector2<T>& other) const;
     bool operator!=(const Vector2<T>& other) const;
 
-    Vector2(const T& x, const T& y);
-    Vector2();
-    ~Vector2();
     T magnitude() const;
     T magnitude_squared() const;
 
@@ -56,7 +62,7 @@ class Vector2 {
 
     static bool segments_intersect(const Vector2<T>& v1, const Vector2<T>& v2, const Vector2<T>& v3, const Vector2<T>& v4);
     static bool lines_intersect(const Vector2<T>& v1, const Vector2<T>& v2, const Vector2<T>& v3, const Vector2<T>& v4);
-    static std::pair<int, Vector2<T>> line_cercle_intersect(const Vector2<T>& v1, const Vector2<T>& v2, const Vector2<T>& v3, const T& size);
+    static com::pair<int, Vector2<T>> line_cercle_intersect(const Vector2<T>& v1, const Vector2<T>& v2, const Vector2<T>& v3, const T& size);
 
     static Vector2<T> line_projection(const Vector2<T>& v1, const Vector2<T>& v2);
     static Vector2<T> segment_projection(const Vector2<T>& v1, const Vector2<T>& v2, const Vector2<T>& v3);

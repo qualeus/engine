@@ -3,9 +3,9 @@
 namespace bmk {
 
 Recorder *Recorder::last = &root;
-Recorder Recorder::root = Recorder(std::make_shared<BlockData>(perf));
+Recorder Recorder::root  = Recorder(com::make_sptr<BlockData>(perf));
 
-Recorder::Recorder(std::shared_ptr<BlockData> bloc) : Performance(bloc), m_parent(last) {
+Recorder::Recorder(com::sptr<BlockData> bloc) : Performance(bloc), m_parent(last) {
     last = this;
 }
 

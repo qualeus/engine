@@ -1,15 +1,17 @@
+#include "../include/Common/Maths.hpp"
+
 #include "test.hpp"
 
 template <class T>
-std::pair<SVect<T>, SPair<T>> create_pairs(std::vector<T> values) {
+com::pair<SVect<T>, SPair<T>> create_pairs(com::vec<T> values) {
     SVect<T> vect = SVect<T>();
     SPair<T> pair = SPair<T>();
 
     for (int i = 0; i < values.size(); i++) {
-        vect.push_back(std::make_shared<T>(values[i]));
-        for (int j = 0; j < i; j++) { pair.push_back({std::make_shared<T>(values[j]), std::make_shared<T>(values[i])}); }
+        vect.push_back(com::make_sptr<T>(values[i]));
+        for (int j = 0; j < i; j++) { pair.push_back({com::make_sptr<T>(values[j]), com::make_sptr<T>(values[i])}); }
     }
-    return std::pair<SVect<T>, SPair<T>>({vect, pair});
+    return com::pair<SVect<T>, SPair<T>>({vect, pair});
 }
 
 template <class T>
@@ -27,7 +29,7 @@ Vect<T> extract_vect(SVect<T> svect) {
 }
 
 template <class T>
-void remove_pairs(int index_delete, std::vector<T> values) {
+void remove_pairs(int index_delete, com::vec<T> values) {
     /*
     Ex: We remove the 3:
 
@@ -41,7 +43,7 @@ void remove_pairs(int index_delete, std::vector<T> values) {
     */
     std::cout << "\nInput Vector2: " << com::to_string(values) << std::endl;
 
-    std::pair<SVect<int>, SPair<int>> test_result = create_pairs(values);
+    com::pair<SVect<int>, SPair<int>> test_result = create_pairs(values);
 
     com::remove(index_delete, test_result.first);
     com::remove_pairs(index_delete, test_result.second);
@@ -56,7 +58,7 @@ void remove_pairs(int index_delete, std::vector<T> values) {
     std::cout << "\ntest_result_vect: " << com::to_string(test_result_vect) << std::endl;
     std::cout << "test_result_pair: " << com::to_string(test_result_pair) << std::endl;
 
-    std::pair<SVect<int>, SPair<int>> true_result = create_pairs(values);
+    com::pair<SVect<int>, SPair<int>> true_result = create_pairs(values);
 
     Vect<int> true_result_vect = extract_vect(true_result.first);
     Pair<int> true_result_pair = extract_pair(true_result.second);
@@ -72,7 +74,7 @@ void remove_pairs(int index_delete, std::vector<T> values) {
 }
 
 template <class T>
-void remove_pairs_unordered(int index_delete, std::vector<T> values) {
+void remove_pairs_unordered(int index_delete, com::vec<T> values) {
     /*
     Ex: We remove the 3:
 
@@ -86,7 +88,7 @@ void remove_pairs_unordered(int index_delete, std::vector<T> values) {
     */
     std::cout << "\nInput Vector2: " << com::to_string(values) << std::endl;
 
-    std::pair<SVect<int>, SPair<int>> test_result = create_pairs(values);
+    com::pair<SVect<int>, SPair<int>> test_result = create_pairs(values);
 
     auto ptr = com::remove_unordered_return(index_delete, test_result.first);
     com::remove_pairs_unordered(ptr, test_result.second);
@@ -101,7 +103,7 @@ void remove_pairs_unordered(int index_delete, std::vector<T> values) {
     std::cout << "\ntest_result_vect: " << com::to_string(test_result_vect) << std::endl;
     std::cout << "test_result_pair: " << com::to_string(test_result_pair) << std::endl;
 
-    std::pair<SVect<int>, SPair<int>> true_result = create_pairs(values);
+    com::pair<SVect<int>, SPair<int>> true_result = create_pairs(values);
 
     Vect<int> true_result_vect = extract_vect(true_result.first);
     Pair<int> true_result_pair = extract_pair(true_result.second);
@@ -117,7 +119,7 @@ void remove_pairs_unordered(int index_delete, std::vector<T> values) {
 }
 
 int main() {
-    std::vector<int> values = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+    com::vec<int> values = {0, 1, 2, 3, 4, 5, 6, 7, 8};
 
     remove_pairs(0, values);
     remove_pairs(1, values);

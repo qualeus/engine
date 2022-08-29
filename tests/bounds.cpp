@@ -1,3 +1,5 @@
+#include "../include/Geometry/Bounds.hpp"
+
 #include "test.hpp"
 
 template <typename T>

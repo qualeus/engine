@@ -13,4 +13,7 @@
     AllowShortBlocksOnASingleLine: Always,
     AllowShortCaseLabelsOnASingleLine: true,
     SpaceInEmptyBlock: true,
+    AlignConsecutiveAssignments: true,
+    KeepEmptyLinesAtTheStartOfBlocks: true,
+    MaxEmptyLinesToKeep : 1,
 }

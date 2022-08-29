@@ -11,12 +11,12 @@ class Performance {
    private:
     std::chrono::time_point<std::chrono::high_resolution_clock> m_beginning;
     std::chrono::time_point<std::chrono::high_resolution_clock> m_ending;
-    std::shared_ptr<BlockData> m_data;
+    com::sptr<BlockData> m_data;
 
    public:
     std::deque<Performance> childs;
 
-    Performance(std::shared_ptr<BlockData> data);
+    Performance(com::sptr<BlockData> data);
     ~Performance();
 
     void end();

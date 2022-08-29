@@ -42,8 +42,8 @@ int com::rand_interval_centered(int value) {
     [1, 3] => [1, 2, 3]
     [3, 1] => [3, 4, 5, 1]
 */
-std::vector<int> com::cyclic_indexes(int min, int max, int size) {
-    std::vector<int> indexes = {};
+com::vec<int> com::cyclic_indexes(int min, int max, int size) {
+    com::vec<int> indexes = {};
     if (min < max) {
         for (int i = min; i < max + 1; i++) { indexes.push_back(i); }
     } else {
@@ -53,9 +53,9 @@ std::vector<int> com::cyclic_indexes(int min, int max, int size) {
     return indexes;
 }
 
-std::vector<int> com::interpolate_array(const std::vector<int>& array_a, const std::vector<int>& array_b, const float& rate) {
-    int size = std::min(array_a.size(), array_b.size());
-    std::vector<int> array = {0, 0, 0, 0};
+com::vec<int> com::interpolate_array(const com::vec<int>& array_a, const com::vec<int>& array_b, const float& rate) {
+    int size            = std::min(array_a.size(), array_b.size());
+    com::vec<int> array = {0, 0, 0, 0};
     for (int i = 0; i < size; i++) { array[i] = array_a[i] + (array_b[i] - array_a[i]) * rate; }
     return array;
 }

@@ -7,111 +7,95 @@
 #include <vector>
 
 #include "../Geometry/Geometry.hpp"
+#include "Circle.hpp"
 #include "Config.hpp"
+#include "Edge.hpp"
+#include "Polygon.hpp"
+#include "Shape.hpp"
 
 namespace phy {
 
-const static int ID_CORPSE = 1;
-
 class Corpse {
-   protected:
-    int m_id;
-    bool m_fixed;
-    bool m_tied;
-    bool m_etherial;
+   private:
+    int m_id;  // unique identifier for retrieval
 
-    gmt::UnitI m_friction;
-    gmt::UnitI m_mass;
-    gmt::UnitI m_damping;
+    bool m_fixed;     // freeze the position / velocity / acceleration
+    bool m_tied;      // freeze the rotation / angular velocity / torque
+    bool m_etherial;  // bypass every collision with this corpse
 
-    gmt::VectorI m_current_pos;
-    gmt::VectorI m_last_pos;
-    gmt::VectorI m_propulsor;
+    gmt::VectorI m_pos;  // position of the corpse
+    gmt::VectorI m_vel;  // velocity of the corpse
+    gmt::VectorI m_acc;  // force accumulator
 
-    gmt::UnitI m_current_rotation;
-    gmt::UnitI m_last_rotation;
-    gmt::UnitI m_motor;
+    gmt::UnitI m_rot;  // rotation of the corpse
+    gmt::UnitI m_spi;  // angular velocity of the corpse
+    gmt::UnitI m_tor;  // torque accumulator
 
-    gmt::BoundsI m_bounds;
+    gmt::UnitI m_mass;    // mass of the shapes
+    gmt::UnitI m_moment;  // moment of inertia
+
+    com::vec<com::sptr<Shape>> m_shapes;  // physical geometry
+
+    /**
+     * @brief Update the mass and centroid from the shapes data. To use when adding or removing a shape collider in m_shapes.
+     */
+    void calibrate();
 
    public:
-    explicit Corpse(gmt::UnitI mass, gmt::UnitI damping, bool fixed, bool tied, bool etherial);
-    // virtual ~Corpse();
+    explicit Corpse();
+
     inline bool operator==(const Corpse* other);
     Corpse& operator=(const Corpse& rhs);
 
     int get_id() const;
-    virtual int get_class() const;
-    static int id_class();
 
     bool get_fixed() const;
-    void set_fixed(bool fixed);
-
     bool get_etherial() const;
-    void set_etherial(bool etherial);
-
     bool get_tied() const;
+
+    void set_fixed(bool fixed);
+    void set_etherial(bool etherial);
     void set_tied(bool tied);
 
-    virtual void step() = 0;
-    virtual void stop() = 0;
-    virtual void bloc() = 0;
-
-    virtual void move(const gmt::VectorI& move) = 0;
-    virtual void drag(const gmt::VectorI& drag) = 0;
-
-    virtual void turn(const gmt::UnitI& turn) = 0;
-    virtual void rotate(const gmt::UnitI& rotate) = 0;
-
-    virtual bool in_bounds(const gmt::BoundsI& bounds) const = 0;
-    virtual bool pointed(const gmt::VectorI& point) const = 0;
-
     gmt::VectorI get_pos() const;
-    gmt::UnitI get_pos_x() const;
-    gmt::UnitI get_pos_y() const;
+    gmt::VectorI get_vel() const;
+    gmt::VectorI get_acc() const;
 
-    void set_pos(const gmt::VectorI& pos);
-    void set_pos_x(const gmt::UnitI& pos_x);
-    void set_pos_y(const gmt::UnitI& pos_y);
+    void set_pos(gmt::VectorI pos);
+    void set_vel(gmt::VectorI vel);
+    void set_acc(gmt::VectorI acc);
 
-    gmt::VectorI get_last_pos() const;
-    gmt::UnitI get_last_pos_x() const;
-    gmt::UnitI get_last_pos_y() const;
+    gmt::UnitI get_rot() const;
+    gmt::UnitI get_spi() const;
+    gmt::UnitI get_tor() const;
 
-    void set_last_pos(const gmt::VectorI& pos);
-    void set_last_pos_x(const gmt::UnitI& pos_x);
-    void set_last_pos_y(const gmt::UnitI& pos_y);
-
-    gmt::VectorI get_diff_pos() const;
-    gmt::UnitI get_diff_pos_x() const;
-    gmt::UnitI get_diff_pos_y() const;
-
-    gmt::VectorI get_propulsor() const;
-    void set_propulsor(const gmt::VectorI& propulsor);
-
-    gmt::UnitI get_rotation() const;
-    void set_rotation(const gmt::UnitI& current_rotation);
-    gmt::UnitI get_diff_rotation() const;
-
-    gmt::UnitI get_last_rotation() const;
-    void set_last_rotation(const gmt::UnitI& last_rotation);
-
-    gmt::UnitI get_motor() const;
-    void set_motor(const gmt::UnitI& motor);
-
-    void set_damping(const gmt::UnitI& damping);
-    gmt::UnitI get_damping() const;
-    gmt::UnitI get_bounce() const;
+    void set_rot(gmt::UnitI rot);
+    void set_spi(gmt::UnitI spi);
+    void set_tor(gmt::UnitI tor);
 
     gmt::UnitI get_mass() const;
-    void set_mass(const gmt::UnitI& mass);
+    gmt::UnitI get_moment() const;
 
-    gmt::UnitI get_friction() const;
-    void set_friction(const gmt::UnitI& friction);
+    void add_shape(com::sptr<Shape> shape);
+    void remove_shape(int i);
+    com::sptr<Shape> get_shape(int i) const;
+    com::vec<com::sptr<Shape>> get_shapes() const;
+    void set_shapes(com::vec<com::sptr<Shape>> shapes);
+    int get_shapes_size() const;
 
-    gmt::BoundsI get_bounds() const;
+    void apply_force(gmt::VectorI force, gmt::VectorI at);
 
-    bool equals(const Corpse* other);
+    gmt::VectorI local_to_global(gmt::VectorI local) const;
+    gmt::VectorI global_to_local(gmt::VectorI global) const;
+
+    bool pointed(gmt::VectorI pos) const;
+
+    /**
+     * @brief Expensive copy of all the shapes of the body. Only use it for deep copy and prefer get_shapes() for direct access.
+     *
+     * @return com::vec<com::sptr<phy::Shape>>
+     */
+    com::vec<com::sptr<Shape>> get_copy_shapes() const;
 };
 
 }  // namespace phy

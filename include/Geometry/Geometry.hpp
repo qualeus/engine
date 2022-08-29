@@ -5,6 +5,7 @@
 #include "../Common/Maths.hpp"
 #include "Bounds.hpp"
 #include "Config.hpp"
+#include "Matrix2.hpp"
 #include "Vector2.hpp"
 #include "Vertices2.hpp"
 
@@ -19,11 +20,11 @@ typedef float QUALEUS_PRECISION;
 #define MAX_DAMPING 100
 #define MAX_GRAVITY_DISTANCE 1000000000 /* To avoid strange behaviours when comparing big numbers */
 
-using UnitI = QUALEUS_PRECISION;
-using VectorI = Vector2<QUALEUS_PRECISION>;
-using BoundsI = Bounds<QUALEUS_PRECISION>;
+using UnitI     = QUALEUS_PRECISION;
+using VectorI   = Vector2<QUALEUS_PRECISION>;
+using MatrixI   = Matrix2<QUALEUS_PRECISION>;
+using BoundsI   = Bounds<QUALEUS_PRECISION>;
 using VerticesI = Vertices2<QUALEUS_PRECISION>;
-using CollisionI = Collision<QUALEUS_PRECISION>;
 
 }  // namespace gmt
 #endif

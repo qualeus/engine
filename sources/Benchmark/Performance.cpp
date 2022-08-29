@@ -2,7 +2,7 @@
 
 namespace bmk {
 
-Performance::Performance(std::shared_ptr<BlockData> data) : m_data(data) {
+Performance::Performance(com::sptr<BlockData> data) : m_data(data) {
     m_beginning = std::chrono::high_resolution_clock::now();
 }
 

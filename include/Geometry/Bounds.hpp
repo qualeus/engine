@@ -9,10 +9,8 @@ namespace gmt {
 template <typename T>
 class Bounds {
    public:
-    T x1;
-    T y1;
-    T x2;
-    T y2;
+    Vector2<T> p1;
+    Vector2<T> p2;
 
     Bounds<T> operator+(const Bounds<T>& other) const;
     Bounds<T> operator-(const Bounds<T>& other) const;
@@ -22,9 +20,9 @@ class Bounds {
     bool operator==(const Bounds<T>& other) const;
     bool operator!=(const Bounds<T>& other) const;
 
-    Bounds(const T& x1, const T& y1, const T& x2, const T& y2);
+    Bounds(Vector2<T> p1, Vector2<T> p2);
+    Bounds(T x1, T y1, T x2, T y2);
     Bounds();
-    ~Bounds();
 
     Vector2<T> size() const;
     Bounds<T> reorder() const;

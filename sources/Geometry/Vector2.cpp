@@ -2,10 +2,30 @@
 
 namespace gmt {
 
+/* Default Constructor */
+template <typename T>
+Vector2<T>::Vector2() {
+    x = T();
+    y = T();
+}
+template Vector2<int>::Vector2();
+template Vector2<float>::Vector2();
+template Vector2<double>::Vector2();
+
+/* Builder Constructor */
+template <typename T>
+Vector2<T>::Vector2(const T& _x, const T& _y) {
+    x = _x;
+    y = _y;
+}
+template Vector2<int>::Vector2(const int& x, const int& y);
+template Vector2<float>::Vector2(const float& x, const float& y);
+template Vector2<double>::Vector2(const double& x, const double& y);
+
 /* Vectors Operators: +[Ax Ay] = [Ax Ay] */
 template <typename T>
 Vector2<T> Vector2<T>::operator+() const {
-    return Vector2<T>(x, y);
+    return {x, y};
 }
 template Vector2<int> Vector2<int>::operator+() const;
 template Vector2<float> Vector2<float>::operator+() const;
@@ -14,7 +34,7 @@ template Vector2<double> Vector2<double>::operator+() const;
 /* Vectors Operators: -[Ax Ay] = [-Ax -Ay] */
 template <typename T>
 Vector2<T> Vector2<T>::operator-() const {
-    return Vector2<T>(-x, -y);
+    return {-x, -y};
 }
 template Vector2<int> Vector2<int>::operator-() const;
 template Vector2<float> Vector2<float>::operator-() const;
@@ -23,7 +43,7 @@ template Vector2<double> Vector2<double>::operator-() const;
 /* Vectors Operators: [Ax Ay]+[Bx By] = [Ax+Bx Ay+By] */
 template <typename T>
 Vector2<T> Vector2<T>::operator+(const Vector2<T>& other) const {
-    return Vector2<T>(x + other.x, y + other.y);
+    return {x + other.x, y + other.y};
 }
 template Vector2<int> Vector2<int>::operator+(const Vector2<int>& other) const;
 template Vector2<float> Vector2<float>::operator+(const Vector2<float>& other) const;
@@ -32,7 +52,7 @@ template Vector2<double> Vector2<double>::operator+(const Vector2<double>& other
 /* Vectors Operators: [Ax Ay]-[Bx By] = [Ax-Bx Ay-By] */
 template <typename T>
 Vector2<T> Vector2<T>::operator-(const Vector2<T>& other) const {
-    return Vector2<T>(x - other.x, y - other.y);
+    return {x - other.x, y - other.y};
 }
 template Vector2<int> Vector2<int>::operator-(const Vector2<int>& other) const;
 template Vector2<float> Vector2<float>::operator-(const Vector2<float>& other) const;
@@ -41,7 +61,7 @@ template Vector2<double> Vector2<double>::operator-(const Vector2<double>& other
 /* Scalars Operators [Ax Ay]*X = [Ax*X Ay*X] */
 template <typename T>
 Vector2<T> Vector2<T>::operator*(const T& other) const {
-    return Vector2<T>(x * other, y * other);
+    return {x * other, y * other};
 }
 template Vector2<int> Vector2<int>::operator*(const int& other) const;
 template Vector2<float> Vector2<float>::operator*(const float& other) const;
@@ -50,11 +70,59 @@ template Vector2<double> Vector2<double>::operator*(const double& other) const;
 /* Scalars Operators [Ax Ay]/X = [Ax/X Ay/X] */
 template <typename T>
 Vector2<T> Vector2<T>::operator/(const T& other) const {
-    return Vector2<T>(x / other, y / other);
+    return {x / other, y / other};
 }
 template Vector2<int> Vector2<int>::operator/(const int& other) const;
 template Vector2<float> Vector2<float>::operator/(const float& other) const;
 template Vector2<double> Vector2<double>::operator/(const double& other) const;
+
+/* Scalars Accumulators (see '+' operator) */
+template <typename T>
+Vector2<T>& Vector2<T>::operator+=(const Vector2<T>& other) {
+    x += other.x;
+    y += other.y;
+
+    return *this;
+}
+template Vector2<int>& Vector2<int>::operator+=(const Vector2<int>& other);
+template Vector2<float>& Vector2<float>::operator+=(const Vector2<float>& other);
+template Vector2<double>& Vector2<double>::operator+=(const Vector2<double>& other);
+
+/* Scalars Accumulators (see '-' operator) */
+template <typename T>
+Vector2<T>& Vector2<T>::operator-=(const Vector2<T>& other) {
+    x -= other.x;
+    y -= other.y;
+
+    return *this;
+}
+template Vector2<int>& Vector2<int>::operator-=(const Vector2<int>& other);
+template Vector2<float>& Vector2<float>::operator-=(const Vector2<float>& other);
+template Vector2<double>& Vector2<double>::operator-=(const Vector2<double>& other);
+
+/* Scalars Accumulators (see '*' operator) */
+template <typename T>
+Vector2<T>& Vector2<T>::operator*=(const T& other) {
+    x *= other;
+    y *= other;
+
+    return *this;
+}
+template Vector2<int>& Vector2<int>::operator*=(const int& other);
+template Vector2<float>& Vector2<float>::operator*=(const float& other);
+template Vector2<double>& Vector2<double>::operator*=(const double& other);
+
+/* Scalars Accumulators (see '/' operator) */
+template <typename T>
+Vector2<T>& Vector2<T>::operator/=(const T& other) {
+    x /= other;
+    y /= other;
+
+    return *this;
+}
+template Vector2<int>& Vector2<int>::operator/=(const int& other);
+template Vector2<float>& Vector2<float>::operator/=(const float& other);
+template Vector2<double>& Vector2<double>::operator/=(const double& other);
 
 /* Comparison Operators: [Ax Ay] == [Bx By] */
 template <typename T>
@@ -75,33 +143,6 @@ bool Vector2<T>::operator!=(const Vector2<T>& other) const {
 template bool Vector2<int>::operator!=(const Vector2<int>& other) const;
 template bool Vector2<float>::operator!=(const Vector2<float>& other) const;
 template bool Vector2<double>::operator!=(const Vector2<double>& other) const;
-
-/* Default Constructor */
-template <typename T>
-Vector2<T>::Vector2() {
-    x = T();
-    y = T();
-}
-template Vector2<int>::Vector2();
-template Vector2<float>::Vector2();
-template Vector2<double>::Vector2();
-
-/* Default Destructor */
-template <typename T>
-Vector2<T>::~Vector2() { }
-template Vector2<int>::~Vector2();
-template Vector2<float>::~Vector2();
-template Vector2<double>::~Vector2();
-
-/* Builder Constructor */
-template <typename T>
-Vector2<T>::Vector2(const T& _x, const T& _y) {
-    x = _x;
-    y = _y;
-}
-template Vector2<int>::Vector2(const int& x, const int& y);
-template Vector2<float>::Vector2(const float& x, const float& y);
-template Vector2<double>::Vector2(const double& x, const double& y);
 
 /* Vector2 length: ||A|| = size = sqrt(Ax*Ax + Ay*Ay) */
 template <typename T>
@@ -124,7 +165,7 @@ template double Vector2<double>::magnitude_squared() const;
 /* Duplication Method */
 template <typename T>
 Vector2<T> Vector2<T>::clone() const {
-    return Vector2<T>(x, y);
+    return {x, y};
 }
 template Vector2<int> Vector2<int>::clone() const;
 template Vector2<float> Vector2<float>::clone() const;
@@ -135,7 +176,7 @@ template <typename T>
 Vector2<T> Vector2<T>::normalize() const {
     T m = magnitude();
     if (m == T()) { return Vector2<T>(); }  // Avoid dividing by 0
-    return Vector2<T>(x / m, y / m);
+    return {x / m, y / m};
 }
 template Vector2<int> Vector2<int>::normalize() const;
 template Vector2<float> Vector2<float>::normalize() const;
@@ -144,7 +185,7 @@ template Vector2<double> Vector2<double>::normalize() const;
 /* Scale vector: [Ax Ay].scale = [Ax*scale Ay*scale] */
 template <typename T>
 Vector2<T> Vector2<T>::scale(const T& scale) const {
-    return Vector2<T>(x * scale, y * scale);
+    return {x * scale, y * scale};
 }
 template Vector2<int> Vector2<int>::scale(const int& scale) const;
 template Vector2<float> Vector2<float>::scale(const float& scale) const;
@@ -165,9 +206,9 @@ Vector2<T> Vector2<T>::pow(const int& power) const {
 template <typename T>
 Vector2<T> Vector2<T>::rotate(const float& angle) const {
     float theta = com::degree_to_radian(angle);
-    float cos_theta = std::cos(theta);
-    float sin_theta = std::sin(theta);
-    return Vector2<T>(x * cos_theta - y * sin_theta, x * sin_theta + y * cos_theta);
+    T cos_theta = static_cast<T>(std::cos(theta));
+    T sin_theta = static_cast<T>(std::sin(theta));
+    return {x * cos_theta - y * sin_theta, x * sin_theta + y * cos_theta};
 }
 template Vector2<int> Vector2<int>::rotate(const float& angle) const;
 template Vector2<float> Vector2<float>::rotate(const float& angle) const;
@@ -177,10 +218,10 @@ template Vector2<double> Vector2<double>::rotate(const float& angle) const;
 template <typename T>
 Vector2<T> Vector2<T>::set_angle(const float& angle) const {
     float theta = com::degree_to_radian(angle);
-    float cos_theta = std::cos(theta);
-    float sin_theta = std::sin(theta);
-    T m = magnitude();
-    return Vector2<T>(m * cos_theta, m * sin_theta);
+    T cos_theta = static_cast<T>(std::cos(theta));
+    T sin_theta = static_cast<T>(std::sin(theta));
+    T m         = magnitude();
+    return {m * cos_theta, m * sin_theta};
 }
 template Vector2<int> Vector2<int>::set_angle(const float& angle) const;
 template Vector2<float> Vector2<float>::set_angle(const float& angle) const;
@@ -207,7 +248,7 @@ template double Vector2<double>::cross(const Vector2<double>& v1, const Vector2<
 /* Normal of the Vector2: [-Ay, Ax] */
 template <typename T>
 Vector2<T> Vector2<T>::normal(const Vector2<T>& v1) {
-    return Vector2<T>(-v1.y, v1.x);
+    return {-v1.y, v1.x};
 }
 template Vector2<int> Vector2<int>::normal(const Vector2<int>& v1);
 template Vector2<float> Vector2<float>::normal(const Vector2<float>& v1);
@@ -216,7 +257,7 @@ template Vector2<double> Vector2<double>::normal(const Vector2<double>& v1);
 /* Inverted Normal of the Vector2: [Ay, -Ax] */
 template <typename T>
 Vector2<T> Vector2<T>::normal_inverted(const Vector2<T>& v1) {
-    return Vector2<T>(v1.y, -v1.x);
+    return {v1.y, -v1.x};
 }
 template Vector2<int> Vector2<int>::normal_inverted(const Vector2<int>& v1);
 template Vector2<float> Vector2<float>::normal_inverted(const Vector2<float>& v1);
@@ -225,7 +266,7 @@ template Vector2<double> Vector2<double>::normal_inverted(const Vector2<double>&
 /* Normal of the Angle: [Ay - By, Bx - Ax] (normal from the wall as if vectors were deflected in a mirror) */
 template <typename T>
 Vector2<T> Vector2<T>::normal(const Vector2<T>& v1, const Vector2<T>& v2) {
-    return Vector2<T>(v1.y - v2.y, v2.x - v1.x);
+    return {v1.y - v2.y, v2.x - v1.x};
 }
 template Vector2<int> Vector2<int>::normal(const Vector2<int>& v1, const Vector2<int>& v2);
 template Vector2<float> Vector2<float>::normal(const Vector2<float>& v1, const Vector2<float>& v2);
@@ -234,7 +275,7 @@ template Vector2<double> Vector2<double>::normal(const Vector2<double>& v1, cons
 /* Inverse Normal of the Angle: [By - Ay, Ax - Bx] (normal towards the wall as if vectors were deflected in a mirror) */
 template <typename T>
 Vector2<T> Vector2<T>::normal_inverted(const Vector2<T>& v1, const Vector2<T>& v2) {
-    return Vector2<T>(v2.y - v1.y, v1.x - v2.x);
+    return {v2.y - v1.y, v1.x - v2.x};
 }
 template Vector2<int> Vector2<int>::normal_inverted(const Vector2<int>& v1, const Vector2<int>& v2);
 template Vector2<float> Vector2<float>::normal_inverted(const Vector2<float>& v1, const Vector2<float>& v2);
@@ -357,11 +398,11 @@ template <typename T>
 bool Vector2<T>::lines_intersect(const Vector2<T>& v1, const Vector2<T>& v2, const Vector2<T>& v3, const Vector2<T>& v4) {
     T ABx = v1.x - v2.x;
     T ABy = v2.y - v1.y;
-    T AB = ABy * v1.x + ABx * v1.y;
+    T AB  = ABy * v1.x + ABx * v1.y;
 
     T CDx = v3.x - v4.x;
     T CDy = v4.y - v3.y;
-    T CD = CDy * v3.x + CDx * v3.y;
+    T CD  = CDy * v3.x + CDx * v3.y;
 
     // Det = 0 <=> Parallel Lines
     if (ABy * CDx - CDy * ABx == 0) { return false; }
@@ -373,7 +414,7 @@ template bool Vector2<double>::lines_intersect(const Vector2<double>& v1, const 
 
 /* Test if the line segment [AB] intersect with the circle of center C and of radius size. Return true if collide and the collision point */
 template <typename T>
-std::pair<int, Vector2<T>> Vector2<T>::line_cercle_intersect(const Vector2<T>& v1, const Vector2<T>& v2, const Vector2<T>& v3, const T& size) {
+com::pair<int, Vector2<T>> Vector2<T>::line_cercle_intersect(const Vector2<T>& v1, const Vector2<T>& v2, const Vector2<T>& v3, const T& size) {
     // Check if one of the ends of the line segment (side) is inside the circle
     if (Vector2<T>::distance(v1, v3) < size) { return {2, v1}; }
     if (Vector2<T>::distance(v2, v3) < size) { return {3, v2}; }
@@ -385,9 +426,9 @@ std::pair<int, Vector2<T>> Vector2<T>::line_cercle_intersect(const Vector2<T>& v
 
     return {0, Vector2<T>()};
 }
-template std::pair<int, Vector2<int>> Vector2<int>::line_cercle_intersect(const Vector2<int>& v1, const Vector2<int>& v2, const Vector2<int>& v3, const int& size);
-template std::pair<int, Vector2<float>> Vector2<float>::line_cercle_intersect(const Vector2<float>& v1, const Vector2<float>& v2, const Vector2<float>& v3, const float& size);
-template std::pair<int, Vector2<double>> Vector2<double>::line_cercle_intersect(const Vector2<double>& v1, const Vector2<double>& v2, const Vector2<double>& v3, const double& size);
+template com::pair<int, Vector2<int>> Vector2<int>::line_cercle_intersect(const Vector2<int>& v1, const Vector2<int>& v2, const Vector2<int>& v3, const int& size);
+template com::pair<int, Vector2<float>> Vector2<float>::line_cercle_intersect(const Vector2<float>& v1, const Vector2<float>& v2, const Vector2<float>& v3, const float& size);
+template com::pair<int, Vector2<double>> Vector2<double>::line_cercle_intersect(const Vector2<double>& v1, const Vector2<double>& v2, const Vector2<double>& v3, const double& size);
 
 /* Project point A onto the line B */
 template <typename T>

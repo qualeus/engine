@@ -1,27 +1,23 @@
 // clang-format off
 #include <stdexcept>
 #include <string>
-#include "../include/Common/Maths.hpp"
 #include "../include/Common/String.hpp"
-#include "../include/Geometry/Vector2.hpp"
-#include "../include/Geometry/Vertices2.hpp"
-#include "../include/Geometry/Bounds.hpp"
 
 
 template <class T>
 using Unit = T;
 
 template <class T>
-using Vect = std::vector<T>;
+using Vect = com::vec<T>;
 
 template <class T>
-using Pair = std::vector<std::pair<T, T>>;
+using Pair = com::vec<com::pair<T, T>>;
 
 template <class T>
-using SVect = std::vector<std::shared_ptr<T>>;
+using SVect = com::vec<com::sptr<T>>;
 
 template <class T>
-using SPair = std::vector<std::pair<std::shared_ptr<T>, std::shared_ptr<T>>>;
+using SPair = com::vec<com::pair<com::sptr<T>, com::sptr<T>>>;
 
 #define ASSERT_THROW(condition) { if (!(condition)) { throw std::runtime_error(std::string("\n") + std::string(__FILE__) + std::string(":") + std::to_string(__LINE__) + std::string(" in ") + std::string(__PRETTY_FUNCTION__)); } }
 

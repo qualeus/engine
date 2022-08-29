@@ -3,71 +3,40 @@
 
 #include <vector>
 
-#include "Circle.hpp"
 #include "Config.hpp"
-#include "Corpse.hpp"
+#include "Shape.hpp"
 
 namespace phy {
 
-const static int ID_POLYGON = 3;
-
-class Polygon : public Corpse {
+class Polygon : public Shape {
    private:
-    gmt::VerticesI m_points;
-    std::vector<gmt::VerticesI> m_polygons;
+    gmt::VerticesI m_vertices;  // vertices of the polygon (relative to the shape centroid)
+
+    /**
+     * @brief Compute moment and centroid. To use when object is initalized or edited
+     */
+    void calibrate();
 
    public:
-    Polygon(std::vector<gmt::VectorI> points = {},
-            gmt::UnitI mass = gmt::UnitI(1),
-            gmt::UnitI damping = gmt::UnitI(1),
-            gmt::UnitI speed_x = gmt::UnitI(0),
-            gmt::UnitI speed_y = gmt::UnitI(0),
-            gmt::UnitI rotation = gmt::UnitI(0),
-            gmt::UnitI motor = gmt::UnitI(0),
-            bool fixed = false,
-            bool tied = false,
-            bool etherial = false);
-
+    Polygon();
+    Polygon(gmt::UnitI mass, gmt::UnitI friction, gmt::UnitI damping, gmt::VerticesI vertices);
     Polygon& operator=(const Polygon& rhs);
 
-    // virtual ~Polygon();
+    gmt::VerticesI get_vertices() const;
+    void set_vertices(gmt::VerticesI vertices);
 
-    const int get_class();
+    int get_vertices_number() const;
+    void add_vertice(gmt::VectorI point);
+    void remove_vertice(int i);
 
-    static int id_class();
+    /**
+     * @brief Expensive copy of all the vertices of the ^polygon. Only use it for deep copy and prefer get_vertices() for direct access.
+     *
+     * @return gmt::VerticesI
+     */
+    gmt::VerticesI get_copy_vertices() const;
 
-    void step();
-
-    void stop();
-
-    void bloc();
-
-    void move(const gmt::VectorI& move);
-    void drag(const gmt::VectorI& drag);
-
-    void turn(const gmt::UnitI& move);
-    void rotate(const gmt::UnitI& rotate);
-
-    bool in_bounds(const gmt::BoundsI& bounds) const;
-    bool pointed(const gmt::VectorI& point) const;
-
-    void generate();
-
-    int get_points_number() const;
-    void add_point(gmt::VectorI point);
-    void remove_point(int i);
-
-    gmt::VerticesI get_points() const;
-    void set_points(gmt::VerticesI points);
-    int get_points_size() const;
-
-    std::vector<gmt::VerticesI> get_polygons() const;
-    void set_polygons(std::vector<gmt::VerticesI> polygons);
-    int get_polygons_size() const;
-
-    void update_bounds();
-
-    std::vector<std::pair<std::shared_ptr<gmt::VectorI>, std::shared_ptr<gmt::VectorI>>> get_sides() const;
+    bool pointed(gmt::VectorI pos) const;
 };
 
 }  // namespace phy

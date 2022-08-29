@@ -32,8 +32,8 @@ std::string to_string(T param) {
 
 /* Partially specialized template for Pairs */
 template <typename A, typename B>
-struct string<std::pair<A, B>> {
-    static std::string str(std::pair<A, B> param) {
+struct string<com::pair<A, B>> {
+    static std::string str(com::pair<A, B> param) {
         std::ostringstream oss;
         oss << "{ " << com::to_string<A>(param.first) << ", " << com::to_string<B>(param.second) << " }";
         return oss.str();
@@ -42,10 +42,10 @@ struct string<std::pair<A, B>> {
 
 /* Partially specialized template for Vectors */
 template <typename T>
-struct string<std::vector<T>> {
-    static std::string str(std::vector<T> param) {
+struct string<com::vec<T>> {
+    static std::string str(com::vec<T> param) {
         std::ostringstream oss;
-        oss << "std::vector { ";
+        oss << "com::vec { ";
         if (!param.empty()) {
             std::transform(param.begin(), param.end() - 1, std::ostream_iterator<std::string>(oss, ", "), com::to_string<T>);
             oss << com::to_string<T>(param.back());
@@ -57,13 +57,13 @@ struct string<std::vector<T>> {
 
 /* Partially specialized template for Vector2 of Pairs */
 template <typename A, typename B>
-struct string<std::vector<std::pair<A, B>>> {
-    static std::string str(std::vector<std::pair<A, B>> param) {
+struct string<com::vec<com::pair<A, B>>> {
+    static std::string str(com::vec<com::pair<A, B>> param) {
         std::ostringstream oss;
-        oss << "std::vector { ";
+        oss << "com::vec { ";
         if (!param.empty()) {
-            std::transform(param.begin(), param.end() - 1, std::ostream_iterator<std::string>(oss, ", "), com::to_string<std::pair<A, B>>);
-            oss << com::to_string<std::pair<A, B>>(param.back());
+            std::transform(param.begin(), param.end() - 1, std::ostream_iterator<std::string>(oss, ", "), com::to_string<com::pair<A, B>>);
+            oss << com::to_string<com::pair<A, B>>(param.back());
         }
         oss << " }";
         return oss.str();
@@ -80,12 +80,22 @@ struct string<gmt::Vector2<T>> {
     }
 };
 
-/* Partially specialized template for shared_ptr of gmt::Vector2 */
+/* Partially specialized template for com::sptr of gmt::Vector2 */
 template <typename T>
-struct string<std::shared_ptr<gmt::Vector2<T>>> {
-    static std::string str(std::shared_ptr<gmt::Vector2<T>> param) {
+struct string<com::sptr<gmt::Vector2<T>>> {
+    static std::string str(com::sptr<gmt::Vector2<T>> param) {
         std::ostringstream oss;
-        oss << "std::shared_ptr ( " << com::to_string(*param) << " )";
+        oss << "com::sptr ( " << com::to_string(*param) << " )";
+        return oss.str();
+    }
+};
+
+/* Partially specialized template for gmt::Matrix2 */
+template <typename T>
+struct string<gmt::Matrix2<T>> {
+    static std::string str(gmt::Matrix2<T> param) {
+        std::ostringstream oss;
+        oss << "gmt::Matrix2 { " << param[0] << " ; " << param[1] << " ; " << param[2] << " ; " << param[3] << " }";
         return oss.str();
     }
 };
@@ -97,8 +107,8 @@ struct string<gmt::Vertices2<T>> {
         std::ostringstream oss;
         oss << "gmt::Vertices2 { ";
         if (!param.vertices.empty()) {
-            std::transform(param.vertices.begin(), param.vertices.end() - 1, std::ostream_iterator<std::string>(oss, ", "), com::to_string<std::shared_ptr<gmt::Vector2<T>>>);
-            oss << com::to_string<std::shared_ptr<gmt::Vector2<T>>>(param.vertices.back());
+            std::transform(param.vertices.begin(), param.vertices.end() - 1, std::ostream_iterator<std::string>(oss, ", "), com::to_string<gmt::Vector2<T>>);
+            oss << com::to_string<gmt::Vector2<T>>(param.vertices.back());
         }
         oss << " }";
         return oss.str();
@@ -110,7 +120,7 @@ template <typename T>
 struct string<gmt::Bounds<T>> {
     static std::string str(gmt::Bounds<T> param) {
         std::ostringstream oss;
-        oss << "gmt::Bounds { " << param.x1 << ", " << param.y1 << " ; " << param.x2 << ", " << param.y2 << " }";
+        oss << "gmt::Bounds { " << com::to_string<gmt::Vector2<T>>(param.p1) << ", " << com::to_string<gmt::Vector2<T>>(param.p2) << " }";
         return oss.str();
     }
 };
@@ -120,15 +130,15 @@ template <typename T>
 constexpr auto type_name() noexcept {
     std::string_view name = "Error: unsupported compiler", prefix, suffix;
 #ifdef __clang__
-    name = __PRETTY_FUNCTION__;
+    name   = __PRETTY_FUNCTION__;
     prefix = "auto type_name() [T = ";
     suffix = "]";
 #elif defined(__GNUC__)
-    name = __PRETTY_FUNCTION__;
+    name   = __PRETTY_FUNCTION__;
     prefix = "constexpr auto type_name() [with T = ";
     suffix = "]";
 #elif defined(_MSC_VER)
-    name = __FUNCSIG__;
+    name   = __FUNCSIG__;
     prefix = "auto __cdecl type_name<";
     suffix = ">(void) noexcept";
 #endif
